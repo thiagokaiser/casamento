@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        {% block title %}
+            <title>Título</title>
+        {% endblock title %}
+
+        {% load static %}
+        <!-- Bootstrap 3.3.4 -->
+        <link rel="stylesheet" type="text/css" href="{% static 'app/bootstrap/css/bootstrap.css' %}" />
+        <!-- Theme style -->
+        <link rel="stylesheet" type="text/css" href="{% static 'app/dist/css/AdminLTE.css' %}" />
+        <!-- CSS TEMPLATE -->
+        <link rel="stylesheet" type="text/css" href="{% static 'app/style.css' %}" />
+        <!-- CSS Tema azul -->
+        <link rel="stylesheet" type="text/css" href="{% static 'app/dist/css/skins/skin-black-light.css' %}" />        
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" type="text/css" href="{% static 'app/font-awesome/css/font-awesome.min.css' %}" />        
+        
+
+
+    </head>
+
+
+    <body class="skin-black-light sidebar-mini">
+
+        <div class="wrapper">
+            <!-- Main Header -->
+            <header class="main-header">
+
+                <!-- Logo -->
+                <a href="{% url 'app:home' %}" class="logo">
+                    <!-- mini logo for sidebar mini 50x50 pixels -->
+                    <span class="logo-mini"><b>Kz</b></span>
+                    <!-- logo for regular state and mobile devices -->
+                    <span class="logo-lg">Kaiserz</span>
+                </a>
+
+                <!-- Header Navbar -->
+                <nav class="navbar navbar-static-top" role="navigation">
+                    <!-- Sidebar toggle button-->
+                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">Toggle navigation</span>
+                    </a>
+                    <!-- Navbar Right Menu -->
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <!-- Messages: style can be found in dropdown.less-->
+                            <li class="dropdown messages-menu">
+                                <!-- Menu toggle button -->
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="label label-success">1</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="header">Voce tem 1 mensagem</li>
+                                    <li>
+                                        <!-- inner menu: contains the messages -->
+                                        <ul class="menu">
+                                            <li><!-- start message -->
+                                                <a href="#">
+                                                    <div class="pull-left">
+                                                        <!-- User Image -->
+                                                        <img src="{% static 'img/img-user.jpg' %}" class="img-circle" alt="User Image" />
+                                                    </div>
+                                                    <!-- Message title and timestamp -->
+                                                    <h4>
+                                                        Titulo
+                                                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                                    </h4>
+                                                    <!-- The message -->
+                                                    <p>Mensagem</p>
+                                                </a>
+                                            </li><!-- end message -->
+                                        </ul><!-- /.menu -->
+                                    </li>
+                                    <li class="footer"><a href="#">Ver todas mensagens</a></li>
+                                </ul>
+                            </li><!-- /.messages-menu -->
+
+                            <!-- User Account Menu -->
+                            <li class="dropdown user user-menu">
+                                <!-- Menu Toggle Button -->
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <!-- The user image in the navbar-->
+                                    <img src="{% static 'img/img-user.jpg' %}" class="user-image" alt="User Image" />
+                                    <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                                    <span class="hidden-xs">{{ user.first_name }}</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!-- The user image in the menu -->
+                                    <li class="user-header">
+                                        <img src="{% static 'img/img-user.jpg' %}" class="img-circle" alt="User Image" />
+                                        <p>
+                                            {{ user.first_name }} {{ user.last_name }}
+                                            <small>Membro desde {{ user.date_joined }}</small>
+                                        </p>
+                                    </li>                                                                        
+                                    <!-- Menu Footer-->
+                                    <li class="user-footer">
+                                        <div class="pull-left">
+                                            <a href="{% url 'app:profile' %}" class="btn btn-default btn-flat">Perfil</a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="{% url 'app:logout' %}" class="btn btn-default btn-flat">Logout</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>              
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+
+            <!-- Left side column. contains the logo and sidebar -->
+            <aside class="main-sidebar">
+
+                <!-- sidebar: style can be found in sidebar.less -->
+                <section class="sidebar">
+
+                    <!-- Sidebar Menu -->
+                    <ul class="sidebar-menu">
+                        <li class="header">Menu</li>
+                        <!-- Optionally, you can add icons to the links -->
+                        <li class="active"><a href="{% url 'app:home' %}"><i class="fa fa-home"></i> <span>Home</span></a></li>
+                        <li class="treeview">
+                            <a href="#"><i class="fa fa-edit"></i> <span>Categorias</span> <i class="fa fa-angle-left pull-right"></i></a>
+                            <ul class="treeview-menu">
+                                <li><a href="#"><i class="fa fa-circle-o"></i>Cadastro</a></li>
+                                <li><a href="#"><i class="fa fa-circle-o"></i>Consulta</a></li>
+                            </ul>
+                        </li>                                                
+                        <li class="treeview">
+                            <a href="#"><i class="fa fa-dollar"></i> <span>Orçamentos</span> <i class="fa fa-angle-left pull-right"></i></a>
+                            <ul class="treeview-menu">
+                                <li><a href="#"><i class="fa fa-circle-o"></i>Cadastro</a></li>
+                                <li><a href="#"><i class="fa fa-circle-o"></i>Consulta</a></li>
+                            </ul>
+                        </li>                                                
+                        <li class="treeview">
+                            <a href="#"><i class="fa fa-bar-chart"></i> <span>Relatórios</span> <i class="fa fa-angle-left pull-right"></i></a>
+                            <ul class="treeview-menu">
+                                <li><a href="#"><i class="fa fa-circle-o"></i>Planilhas</a></li>
+                                <li><a href="#"><i class="fa fa-circle-o"></i>Graficos</a></li>
+                            </ul>
+                        </li>                   
+                        <li class="treeview">
+                            <a href="#"><i class="fa fa-paperclip"></i> <span>Anexos</span> <i class="fa fa-angle-left pull-right"></i></a>
+                            <ul class="treeview-menu">
+                                <li><a href="#"><i class="fa fa-circle-o"></i>Cadastro</a></li>
+                                <li><a href="#"><i class="fa fa-circle-o"></i>Consulta</a></li>
+                            </ul>
+                        </li>                                                                             
+                    </ul><!-- /.sidebar-menu -->
+                </section>
+                <!-- /.sidebar -->
+            </aside>
+                
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                {% block content %}
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <h1>
+                        Orçamentos
+                        <small>Olga e Thiago</small>
+                    </h1>                    
+                </section>
+
+                <!-- Main content -->
+                <section class="content">
+                    <!-- Your Page Content Here -->                    
+
+                    <div class="box">            
+                        <div class="box-body">
+                            <div class="row">
+                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                <div class="info-box bg-aqua">
+                                    <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
+
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Pagamentos</span>
+                                        <span class="info-box-number">R$ 41.410,00</span>
+
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: 70%"></div>
+                                        </div>
+                                        <span class="progress-description">
+                                            Total: 50.000,00
+                                        </span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <!-- /.info-box -->
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                <div class="info-box bg-yellow">
+                                    <span class="info-box-icon"><i class="fa fa-calendar"></i></span>
+
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Faltam</span>
+                                        <span class="info-box-number">638 dias</span>
+                                        
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <!-- /.info-box -->
+                            </div>
+                            
+                            
+
+                        </div>
+                    </div>                    
+                </section><!-- /.content -->
+                {% endblock content %}
+            </div><!-- /.content-wrapper -->
+
+            <!-- Main Footer -->
+            <footer class="main-footer">
+                <!-- To the right -->
+                <div class="pull-right hidden-xs">
+                    Anything you want
+                </div>
+                <!-- Default to the left -->
+                <strong>Copyright &copy; 2015 <a href="#">Kaiser</a>.</strong> All rights reserved.
+            </footer>
+
+        </div><!-- ./wrapper -->
+
+        <!-- REQUIRED JS SCRIPTS -->
+
+        <!-- jQuery 2.1.4 -->
+        <script type="text/javascript" src="{% static 'app/plugins/jQuery/jQuery-2.1.4.min.js' %}" ></script>
+        <!-- Bootstrap 3.3.2 JS -->
+        <script type="text/javascript" src="{% static 'app/bootstrap/js/bootstrap.js' %}"></script>
+        <!-- AdminLTE App -->
+        <script type="text/javascript" src="{% static 'app/dist/js/app.min.js' %}"></script>
+
+        
+    </body>
+</html>

@@ -1,0 +1,33 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Perfil
+        <small>Consulta Informações</small>
+    </h1>                    
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Your Page Content Here -->                    
+
+    <div class="box box-primary">            
+        <div class="box-body">
+            <p> Username: {{ user }} </p>
+			<p> First Name: {{ user.first_name }} </p>
+			<p> Last Name: {{ user.last_name }} </p>
+			<p> Email: {{ user.email }} </p>
+			<br>
+			<a class="btn btn-default" href="{% url 'app:edit_profile' %}">Editar Perfil</a>
+			<a class="btn btn-default" href="{% url 'app:change_password' %}">Alterar Senha</span></a>         
+            
+            
+
+        </div>
+    </div>                    
+</section><!-- /.content -->	
+
+{% endblock %}
