@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
+from .models import Categoria, Orcamento
 
 class EditProfileForm(UserChangeForm):
 	password = ReadOnlyPasswordHashField()
@@ -42,3 +43,55 @@ class RegisterProfileForm(UserCreationForm):
 		if User.objects.filter(email=email).exists() == True:
 			raise ValidationError("A user with that email already exists.")			
 		return email
+
+
+class CategoriaForm(forms.ModelForm):	
+	#descricao = forms.CharField(widget=forms.Textarea)
+	class Meta:
+		model = Categoria
+		fields = (
+		'nome',
+		'descricao',		
+		)
+
+	#def clean_responsavel(self):
+	#	responsavel = self.cleaned_data['responsavel']
+	#	if Responsavel.objects.filter(responsavel=responsavel).exists() == False:
+	#		raise ValidationError("Responsavel não cadastrado")			
+	#	return responsavel
+
+class CategoriaFormView(forms.ModelForm):	
+	nome = forms.CharField(disabled=True)	
+	descricao = forms.CharField(disabled=True)	
+	class Meta:
+		model = Categoria
+		fields = (
+		'nome',
+		'descricao',		
+		)
+
+	#def clean_responsavel(self):
+	#	responsavel = self.cleaned_data['responsavel']
+	#	if Responsavel.objects.filter(responsavel=responsavel).exists() == False:
+	#		raise ValidationError("Responsavel não cadastrado")			
+	#	return responsavel
+
+class OrcamentoForm(forms.ModelForm):	
+	#descricao = forms.CharField(widget=forms.Textarea)
+	class Meta:
+		model = Orcamento
+		fields = (
+		'categoria',       
+		'empresa',         
+		'cidade',          
+		'endereço',		
+		'nome_contato',	
+		'num_contato',		
+		'valor_total',		
+		'valor_multa',		
+		'forma_pagto',		
+		'dt_ult_pagto',    
+		'dt_fim_contrato', 
+		'dt_prox_reuniao',	
+		'observacoes',				
+		)

@@ -131,14 +131,14 @@
                         <li class="treeview">
                             <a href="#"><i class="fa fa-edit"></i> <span>Categorias</span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-circle-o"></i>Cadastro</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i>Consulta</a></li>
+                                <li><a href="{% url 'app:categoria_new' %}"><i class="fa fa-circle-o"></i>Cadastro</a></li>
+                                <li><a href="{% url 'app:categoria_list' %}"><i class="fa fa-circle-o"></i>Consulta</a></li>
                             </ul>
                         </li>                                                
                         <li class="treeview">
                             <a href="#"><i class="fa fa-dollar"></i> <span>Orçamentos</span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-circle-o"></i>Cadastro</a></li>
+                                <li><a href="{% url 'app:orcamento_new' %}"><i class="fa fa-circle-o"></i>Cadastro</a></li>
                                 <li><a href="#"><i class="fa fa-circle-o"></i>Consulta</a></li>
                             </ul>
                         </li>                                                
