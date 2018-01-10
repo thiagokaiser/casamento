@@ -33,9 +33,16 @@ urlpatterns = [
     url(r'^reset-password/complete/$', password_reset_complete,{'template_name': 'accounts/reset_password_complete.html'},
                                                                  name='password_reset_complete'),
     url(r'^categoria/cadastra/$', views.Categoria_New , name='categoria_new'),
-    url(r'^categoria/lista/$', views.Categoria_List , name='categoria_list'),
+    url(r'^categoria/lista/(?P<filtro>\w+)/$', views.Categoria_List , name='categoria_list'),
+    url(r'^categoria/filtro/$', views.Categoria_Filtro , name='categoria_filtro'),
     url(r'^categoria/(?P<pk>\d+)/detalhe/$', views.Categoria_Detail , name='categoria_detail'),
     url(r'^categoria/(?P<pk>\d+)/edita/$', views.Categoria_Edit , name='categoria_edit'),
     url(r'^categoria/(?P<pk>\d+)/delete/$', views.Categoria_Del , name='categoria_del'),
     url(r'^orcamento/cadastra/$', views.Orcamento_New , name='orcamento_new'),
+    url(r'^orcamento/lista/(?P<filtro>\w+)/$', views.Orcamento_List , name='orcamento_list'),
+    url(r'^orcamento/filtro/$', views.Orcamento_Filtro , name='orcamento_filtro'),
+    url(r'^orcamento/(?P<pk>\d+)/detalhe/$', views.Orcamento_Detail , name='orcamento_detail'),
+    url(r'^orcamento/(?P<pk>\d+)/edita/$', views.Orcamento_Edit , name='orcamento_edit'),
+    url(r'^orcamento/(?P<pk>\d+)/delete/$', views.Orcamento_Del , name='orcamento_del'),
+    
 ]

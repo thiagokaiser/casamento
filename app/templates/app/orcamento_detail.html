@@ -19,10 +19,10 @@
             <table class="table table-hover" style="width: 100%; max-width: 800px;">
                 {{ form.as_table }}
             </table>        
-            <a class="btn btn-default" href="{% url 'app:categoria_new' %}"><span class="fa fa-file-o"></span></a>
-            <a class="btn btn-default" href="{% url 'app:categoria_edit' pk=categoria.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-            <a class="btn btn-default" href="{% url 'app:categoria_del' pk=categoria.pk %}"><span class="glyphicon glyphicon-trash"></span></a>            
-            <a class="btn btn-default" href="{% url 'app:categoria_list' filtro='all' %}"><span class="glyphicon glyphicon-th-list"></span></a>
+            <a class="btn btn-default" href="{% url 'app:orcamento_new' %}"><span class="fa fa-file-o"></span></a>
+            <a class="btn btn-default" href="{% url 'app:orcamento_edit' pk=orcamento.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a class="btn btn-default" href="{% url 'app:orcamento_del' pk=orcamento.pk %}"><span class="glyphicon glyphicon-trash"></span></a>            
+            <a class="btn btn-default" href="{% url 'app:orcamento_list' filtro='all' %}"><span class="glyphicon glyphicon-th-list"></span></a>
         </div>
     </div>               
 </section><!-- /.content -->	

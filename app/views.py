@@ -22,12 +22,13 @@ from .forms import (
     CategoriaForm,
     CategoriaFormView,
     OrcamentoForm,
+    OrcamentoFormView,
     )
 from .models import (    
     Categoria,
     Orcamento,
     )
-
+from django.contrib.postgres.search import SearchVector
 
 # Create your views here.
 def Home(request):
@@ -121,9 +122,14 @@ def Categoria_Detail(request, pk):
     form = CategoriaFormView(instance=CategoriaDetail)
     return render(request, 'app/categoria_detail.html', {'form': form, 'categoria':CategoriaDetail})
 
-def Categoria_List(request):
-    categoria_list = Categoria.objects.all()
-    page = request.GET.get('page', 1)
+def Categoria_List(request, filtro):    
+    #categoria_list = Categoria.objects.all()
+    if filtro == 'all':
+        filtro = ''
+
+    page    = request.GET.get('page', 1)
+    
+    categoria_list = Categoria.objects.filter(nome__contains=filtro)
 
     paginator = Paginator(categoria_list, 10)
     try:
@@ -131,9 +137,16 @@ def Categoria_List(request):
     except PageNotAnInteger:
         categorias = paginator.page(1)
     except EmptyPage:
-        categorias = paginator.page(paginator.num_pages)
+        categorias = paginator.page(paginator.num_pages)    
 
     return render(request, 'app/categoria_list.html', { 'categoria_list': categorias })
+
+def Categoria_Filtro(request):
+    filtro = request.POST.get('input_search', 'all')
+    if filtro == '':
+        filtro = 'all'
+    
+    return redirect('app:categoria_list', filtro=filtro)
 
 def Categoria_Del(request, pk):
     categoria = get_object_or_404(Categoria, pk=pk)    
@@ -155,4 +168,58 @@ def Orcamento_New(request):
     else:
         form = OrcamentoForm()
 
-    return render(request, 'app/Orcamento_new.html', {'form': form})
+    return render(request, 'app/orcamento_new.html', {'form': form})
+
+def Orcamento_Edit(request, pk): 
+    OrcamentoEdit = get_object_or_404(Orcamento, pk=pk)
+    if request.method == 'POST':
+        form = OrcamentoForm(request.POST, instance=OrcamentoEdit)
+
+        if form.is_valid():
+            form.save()
+            return redirect('app:orcamento_detail', pk=pk)
+
+    else:
+        form = OrcamentoForm(instance=OrcamentoEdit)
+
+    return render(request, 'app/orcamento_edit.html', {'form': form, 'orcamento':OrcamentoEdit})
+
+def Orcamento_Detail(request, pk):        
+    OrcamentoDetail = get_object_or_404(Orcamento, pk=pk)
+    form = OrcamentoFormView(instance=OrcamentoDetail)
+    return render(request, 'app/orcamento_detail.html', {'form': form, 'orcamento':OrcamentoDetail})
+
+def Orcamento_List(request, filtro):    
+    #categoria_list = Categoria.objects.all()
+    if filtro == 'all':
+        filtro = ''
+
+    page    = request.GET.get('page', 1)
+    
+    orcamento_list = Orcamento.objects.filter(empresa__contains=filtro)
+
+    paginator = Paginator(orcamento_list, 10)
+    try:
+        orcamentos = paginator.page(page)
+    except PageNotAnInteger:
+        orcamentos = paginator.page(1)
+    except EmptyPage:
+        orcamentos = paginator.page(paginator.num_pages)    
+
+    return render(request, 'app/orcamento_list.html', { 'orcamento_list': orcamentos })
+
+def Orcamento_Filtro(request):
+    filtro = request.POST.get('input_search', 'all')
+    if filtro == '':
+        filtro = 'all'
+    
+    return redirect('app:orcamento_list', filtro=filtro)
+
+def Orcamento_Del(request, pk):
+    orcamento = get_object_or_404(Orcamento, pk=pk)    
+    form = OrcamentoFormView(instance=orcamento)
+    if request.method=='POST':
+        orcamento.delete()
+        return redirect('app:orcamento_list')
+
+    return render(request, 'app/orcamento_del.html', {'orcamento':orcamento, 'form': form})

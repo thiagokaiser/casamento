@@ -5,8 +5,8 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Orcamento
-        <small>Cadastro</small>
+        Categoria
+        <small>Edita</small>
     </h1>                    
 </section>
 
@@ -22,28 +22,10 @@
                     {{ form.as_table }}
                 </table>
                 <button class="btn btn-primary" type="submit">Salvar</button>
-                <a class="btn btn-primary" href="{% url 'app:orcamento_list' filtro='all' %}">Voltar</a>
+                <a class="btn btn-primary" href="{% url 'app:orcamento_detail' pk=orcamento.pk %}">Voltar</a>
             </form>
         </div>
     </div>               
 </section><!-- /.content -->	
 
 {% endblock %}
-
-{% block javascript %}
-
-
-<script type="text/javascript">
-    jQuery(document).ready(function(){
-        
-        $("#id_categoria").multiselect({
-            //enableFiltering: true,            
-            maxHeight: 200,            
-        });            
-        $("textarea").attr({"rows": "4",
-                            "cols": "30"
-        });        
-    });
-
-</script>
-{% endblock javascript %}

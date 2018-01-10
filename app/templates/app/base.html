@@ -20,8 +20,9 @@
         <!-- CSS Tema azul -->
         <link rel="stylesheet" type="text/css" href="{% static 'app/dist/css/skins/skin-black-light.css' %}" />        
         <!-- Font Awesome Icons -->
-        <link rel="stylesheet" type="text/css" href="{% static 'app/font-awesome/css/font-awesome.min.css' %}" />        
-        
+        <link rel="stylesheet" type="text/css" href="{% static 'app/font-awesome/css/font-awesome.min.css' %}" /> 
+        <!-- Multiselect personalizado -->
+        <link rel="stylesheet" type="text/css" href="{% static 'app/bootstrap-multiselect/dist/css/bootstrap-multiselect.css' %}" />               
 
 
     </head>
@@ -132,14 +133,14 @@
                             <a href="#"><i class="fa fa-edit"></i> <span>Categorias</span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
                                 <li><a href="{% url 'app:categoria_new' %}"><i class="fa fa-circle-o"></i>Cadastro</a></li>
-                                <li><a href="{% url 'app:categoria_list' %}"><i class="fa fa-circle-o"></i>Consulta</a></li>
+                                <li><a href="{% url 'app:categoria_list' filtro='all' %}"><i class="fa fa-circle-o"></i>Consulta</a></li>
                             </ul>
                         </li>                                                
                         <li class="treeview">
                             <a href="#"><i class="fa fa-dollar"></i> <span>Orçamentos</span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
                                 <li><a href="{% url 'app:orcamento_new' %}"><i class="fa fa-circle-o"></i>Cadastro</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i>Consulta</a></li>
+                                <li><a href="{% url 'app:orcamento_list' filtro='all' %}"><i class="fa fa-circle-o"></i>Consulta</a></li>
                             </ul>
                         </li>                                                
                         <li class="treeview">
@@ -239,8 +240,13 @@
         <!-- Bootstrap 3.3.2 JS -->
         <script type="text/javascript" src="{% static 'app/bootstrap/js/bootstrap.js' %}"></script>
         <!-- AdminLTE App -->
-        <script type="text/javascript" src="{% static 'app/dist/js/app.min.js' %}"></script>
-
+        <script type="text/javascript" src="{% static 'app/dist/js/app.min.js' %}"></script>        
+        <!-- Multiselect personalizado -->
+        <script type="text/javascript" src="{% static 'app/bootstrap-multiselect/dist/js/bootstrap-multiselect.js' %}" ></script>
         
+        {% block javascript %}
+
+        {% endblock javascript %}
+
     </body>
 </html>

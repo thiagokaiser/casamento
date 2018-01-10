@@ -95,3 +95,36 @@ class OrcamentoForm(forms.ModelForm):
 		'dt_prox_reuniao',	
 		'observacoes',				
 		)
+
+class OrcamentoFormView(forms.ModelForm):	
+	#descricao = forms.CharField(widget=forms.Textarea)
+	categoria       = forms.CharField(disabled=True)
+	empresa         = forms.CharField(disabled=True)
+	cidade          = forms.CharField(disabled=True)
+	endereço		= forms.CharField(disabled=True)
+	nome_contato	= forms.CharField(disabled=True)
+	num_contato		= forms.CharField(disabled=True)
+	valor_total		= forms.CharField(disabled=True)
+	valor_multa		= forms.CharField(disabled=True)
+	forma_pagto		= forms.CharField(disabled=True)
+	dt_ult_pagto    = forms.CharField(disabled=True)
+	dt_fim_contrato = forms.CharField(disabled=True)
+	dt_prox_reuniao	= forms.CharField(disabled=True)
+	observacoes		= forms.CharField(disabled=True)
+	class Meta:
+		model = Orcamento
+		fields = (
+		'categoria',       
+		'empresa',         
+		'cidade',          
+		'endereço',		
+		'nome_contato',	
+		'num_contato',		
+		'valor_total',		
+		'valor_multa',		
+		'forma_pagto',		
+		'dt_ult_pagto',    
+		'dt_fim_contrato', 
+		'dt_prox_reuniao',	
+		'observacoes',				
+		)

@@ -1,0 +1,37 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Categoria
+        <small>Deleta</small>
+    </h1>                    
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Your Page Content Here -->                    
+
+    <div class="box box-primary">            
+        <div class="box-body">
+            
+            <form method="post">{% csrf_token %}
+				<div class="divdeleta">
+					<h4>Are you sure you want to delete ?</h4>
+					<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-ok"></span> </button>
+				    <a class="btn btn-default" href="{% url 'app:orcamento_detail' pk=orcamento.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+				    <p>
+			    </div
+					<br>
+					<table class="table table-hover" style="width: 100%; max-width: 800px;">
+						{{ form.as_table }}
+					</table>
+			    
+			</form>
+        </div>
+    </div>               
+</section><!-- /.content -->	
+
+{% endblock %}

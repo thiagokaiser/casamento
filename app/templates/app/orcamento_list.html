@@ -16,41 +16,41 @@
 
     <div class="box box-primary">            
         <div class="box-body">
-            <form method="POST" action="{% url 'app:categoria_filtro' %}">{% csrf_token %}
+            <form method="POST" action="{% url 'app:orcamento_filtro' %}">{% csrf_token %}
                 <input pattern="[a-zA-Z0-9]+" type="text" id="input_search" name="input_search"></search>
                 <button class="btn btn-default" tupy="submit"><span class="glyphicon glyphicon-search"></span></button>
             </form>
             <br>            
             <table class="table table-hover" style="width: 100%; max-width: 600px;">
-				<tr><th>Nome </th><th>Descrição </th></tr>
-				{% for categoria in categoria_list %}
-					<tr><td>{{ categoria.nome }}</td><td>{{ categoria.descricao }}</td><td> <a class="btn btn-default" href="{% url 'app:categoria_detail' pk=categoria.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a></td></tr>			        
+				<tr><th>Categoria </th><th>Empresa </th></tr>
+				{% for orcamento in orcamento_list %}
+					<tr><td>{{ orcamento.categoria }}</td><td>{{ orcamento.empresa }}</td><td> <a class="btn btn-default" href="{% url 'app:orcamento_detail' pk=orcamento.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a></td></tr>			        
 			    {% endfor %}
 			</table>
 
             <ul class="pagination">
                 {% if categoria_list.has_previous %}
                     <li><a href="?page=1"><span class="fa fa-angle-double-left"></span></a></li>
-                    <li><a href="?page={{ categoria_list.previous_page_number }}"><span class="fa fa-angle-left"></span></a></li>
+                    <li><a href="?page={{ orcamento_list.previous_page_number }}"><span class="fa fa-angle-left"></span></a></li>
                 {% else %}
                     <li class="disabled"><span class="fa fa-angle-double-left"></span></li>
                     <li class="disabled"><span class="fa fa-angle-left"></span></li>
                 {% endif %}
-                {% for page in categoria_list.paginator.page_range %}
-                {% if page >= categoria_list.number|add:"-3" and page < categoria_list.number %}
+                {% for page in orcamento_list.paginator.page_range %}
+                {% if page >= orcamento_list.number|add:"-3" and page < orcamento_list.number %}
                     <li><a href="?page={{ page }}">{{ page }}</a></li>
                 {% endif %}
-                {% ifequal categoria_list.number page %}
-                    <li class="active"><span>{{ categoria_list.number }}</span></li>
+                {% ifequal orcamento_list.number page %}
+                    <li class="active"><span>{{ orcamento_list.number }}</span></li>
                 {% endifequal %}
                 
-                {% if page <= categoria_list.number|add:"3" and page > categoria_list.number %}
+                {% if page <= orcamento_list.number|add:"3" and page > orcamento_list.number %}
                     <li><a href="?page={{ page }}">{{ page }}</a></li>
                 {% endif %}
                 {% endfor %}
-                {% if categoria_list.has_next %}
-                    <li><a href="?page={{ categoria_list.next_page_number }}"><span class="fa fa-angle-right"></span></a></li>
-                    <li><a href="?page={{ categoria_list.paginator.num_pages }}"><span class="fa fa-angle-double-right"></span></a></li>
+                {% if orcamento_list.has_next %}
+                    <li><a href="?page={{ orcamento_list.next_page_number }}"><span class="fa fa-angle-right"></span></a></li>
+                    <li><a href="?page={{ orcamento_list.paginator.num_pages }}"><span class="fa fa-angle-double-right"></span></a></li>
                 {% else %}
                     <li class="disabled"><span class="fa fa-angle-right"></span></li>      
                     <li class="disabled"><span class="fa fa-angle-double-right"></span></li>
