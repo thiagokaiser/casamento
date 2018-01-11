@@ -23,10 +23,12 @@ from .forms import (
     CategoriaFormView,
     OrcamentoForm,
     OrcamentoFormView,
+    PagamentoForm,
     )
 from .models import (    
     Categoria,
     Orcamento,
+    Pagamento,
     )
 from django.contrib.postgres.search import SearchVector
 
@@ -129,7 +131,7 @@ def Categoria_List(request, filtro):
 
     page    = request.GET.get('page', 1)
     
-    categoria_list = Categoria.objects.filter(nome__contains=filtro)
+    categoria_list = Categoria.objects.filter(nome__contains=filtro).order_by('nome')
 
     paginator = Paginator(categoria_list, 10)
     try:
@@ -139,7 +141,7 @@ def Categoria_List(request, filtro):
     except EmptyPage:
         categorias = paginator.page(paginator.num_pages)    
 
-    return render(request, 'app/categoria_list.html', { 'categoria_list': categorias })
+    return render(request, 'app/categoria_list.html', { 'categoria_list': categorias , 'filtro': filtro})
 
 def Categoria_Filtro(request):
     filtro = request.POST.get('input_search', 'all')
@@ -153,7 +155,7 @@ def Categoria_Del(request, pk):
     form = CategoriaFormView(instance=categoria)
     if request.method=='POST':
         categoria.delete()
-        return redirect('app:categoria_list')
+        return redirect('app:categoria_list', filtro='all')
 
     return render(request, 'app/categoria_del.html', {'categoria':categoria, 'form': form})
 
@@ -164,7 +166,7 @@ def Orcamento_New(request):
             #anotacao = form.save(commit=False)            
             #anotacao.data = timezone.now()
             form.save()            
-            return redirect('app:home')
+            return redirect('app:orcamento_list', filtro1='all', filtro2='all')
     else:
         form = OrcamentoForm()
 
@@ -189,15 +191,15 @@ def Orcamento_Detail(request, pk):
     form = OrcamentoFormView(instance=OrcamentoDetail)
     return render(request, 'app/orcamento_detail.html', {'form': form, 'orcamento':OrcamentoDetail})
 
-def Orcamento_List(request, filtro):    
-    #categoria_list = Categoria.objects.all()
-    if filtro == 'all':
-        filtro = ''
+def Orcamento_List(request, filtro1, filtro2):    
+
+    if filtro1 == 'all':
+        filtro1 = ''        
+    orcamento_list = Orcamento.objects.filter(empresa__contains=filtro1).order_by('empresa')
+    if filtro2 != 'all':
+        orcamento_list = orcamento_list.filter(categoria=filtro2).order_by('empresa')
 
     page    = request.GET.get('page', 1)
-    
-    orcamento_list = Orcamento.objects.filter(empresa__contains=filtro)
-
     paginator = Paginator(orcamento_list, 10)
     try:
         orcamentos = paginator.page(page)
@@ -206,20 +208,61 @@ def Orcamento_List(request, filtro):
     except EmptyPage:
         orcamentos = paginator.page(paginator.num_pages)    
 
-    return render(request, 'app/orcamento_list.html', { 'orcamento_list': orcamentos })
+    categoria = Categoria.objects.all()
+
+    return render(request, 'app/orcamento_list.html', {'orcamento_list': orcamentos,
+                                                       'filtro1': filtro1,
+                                                       'filtro2': filtro2,
+                                                       'categoria': categoria})
 
 def Orcamento_Filtro(request):
-    filtro = request.POST.get('input_search', 'all')
-    if filtro == '':
-        filtro = 'all'
+    filtro1 = request.POST.get('input_search', 'all')
+    filtro2 = request.POST.get('id_categ', 'all')
+    if filtro1 == '':
+        filtro1 = 'all'
     
-    return redirect('app:orcamento_list', filtro=filtro)
+    return redirect('app:orcamento_list', filtro1=filtro1, filtro2=filtro2)
 
 def Orcamento_Del(request, pk):
     orcamento = get_object_or_404(Orcamento, pk=pk)    
     form = OrcamentoFormView(instance=orcamento)
     if request.method=='POST':
         orcamento.delete()
-        return redirect('app:orcamento_list')
+        return redirect('app:orcamento_list', filtro1='all', filtro2='all')
 
     return render(request, 'app/orcamento_del.html', {'orcamento':orcamento, 'form': form})
+
+
+def Pagamento_List(request, pk):
+    orcamento = get_object_or_404(Orcamento, pk=pk)
+    pagamento = Pagamento.objects.filter(orcamento=pk)
+    
+    return render(request, 'app/pagamento_list.html', {'orcamento':orcamento, 'pagamento': pagamento})
+
+def Pagamento_List_All(request):    
+    pagamento = Pagamento.objects.all()
+    
+    return render(request, 'app/pagamento_list_all.html', {'pagamento': pagamento})
+
+
+def Pagamento_New(request, pk):
+    orcamento = get_object_or_404(Orcamento, pk=pk)
+
+    if request.method == 'POST':
+        form = PagamentoForm(request.POST)
+        if form.is_valid():
+            #pagamento = form.save(commit=False)            
+            #pagamento.orcamento = orcamento
+            form.save()            
+            return redirect('app:orcamento_list', filtro1='all', filtro2='all')
+    else:
+        form = PagamentoForm(initial={'orcamento': orcamento.pk})
+
+    return render(request, 'app/pagamento_new.html', {'form': form, 'orcamento': orcamento})
+
+
+def Anexo_List(request, pk):
+    orcamento = get_object_or_404(Orcamento, pk=pk)
+    pagamento = Pagamento.objects.filter(orcamento=pk)
+    
+    return render(request, 'app/anexo_list.html', {'orcamento':orcamento, 'pagamento': pagamento})

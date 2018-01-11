@@ -5,7 +5,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Categoria
+        Orçamento
         <small>Edita</small>
     </h1>                    
 </section>
@@ -18,6 +18,9 @@
         <div class="box-body">
             <form method="post">
                 {% csrf_token %}
+                <button class="btn btn-primary" type="submit">Salvar</button>
+                <a class="btn btn-primary" href="{% url 'app:orcamento_detail' pk=orcamento.pk %}">Voltar</a>
+                <p></p>
                 <table class="table table-hover" style="width: 100%; max-width: 800px;">
                     {{ form.as_table }}
                 </table>
@@ -29,3 +32,16 @@
 </section><!-- /.content -->	
 
 {% endblock %}
+
+{% block javascript %}
+
+
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        $("#id_categoria").multiselect({
+            //enableFiltering: true,            
+            maxHeight: 200, 
+        });                           
+    });
+</script>
+{% endblock javascript %}

@@ -21,7 +21,7 @@
                 <button class="btn btn-primary" type="submit">Salvar</button>
                 <a class="btn btn-primary" href="{% url 'app:orcamento_list' filtro1='all' filtro2='all' %}">Voltar</a>
                 <p></p>
-                <table class="table table-hover" style="width: 100%; max-width: 800px;">
+                <table class="table table-hover" style="width: 100%; max-width: 800px;">                    
                     {{ form.as_table }}
                 </table>
                 <button class="btn btn-primary" type="submit">Salvar</button>
@@ -34,18 +34,16 @@
 {% endblock %}
 
 {% block javascript %}
-
 <script type="text/javascript">
     jQuery(document).ready(function(){
         
-        $("#id_categoria").multiselect({
+        $("#id_orcamento").multiselect({
             //enableFiltering: true,            
             maxHeight: 200,            
-        });            
-        $("textarea").attr({"rows": "4",
-                            "cols": "30"
-        });        
+        });                    
+        
     });
 
 </script>
+
 {% endblock javascript %}

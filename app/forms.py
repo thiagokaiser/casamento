@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
-from .models import Categoria, Orcamento
+from .models import Categoria, Orcamento, Pagamento
 
 class EditProfileForm(UserChangeForm):
 	password = ReadOnlyPasswordHashField()
@@ -68,16 +68,10 @@ class CategoriaFormView(forms.ModelForm):
 		fields = (
 		'nome',
 		'descricao',		
-		)
-
-	#def clean_responsavel(self):
-	#	responsavel = self.cleaned_data['responsavel']
-	#	if Responsavel.objects.filter(responsavel=responsavel).exists() == False:
-	#		raise ValidationError("Responsavel não cadastrado")			
-	#	return responsavel
+		)	
 
 class OrcamentoForm(forms.ModelForm):	
-	#descricao = forms.CharField(widget=forms.Textarea)
+	
 	class Meta:
 		model = Orcamento
 		fields = (
@@ -96,21 +90,23 @@ class OrcamentoForm(forms.ModelForm):
 		'observacoes',				
 		)
 
-class OrcamentoFormView(forms.ModelForm):	
-	#descricao = forms.CharField(widget=forms.Textarea)
-	categoria       = forms.CharField(disabled=True)
+class OrcamentoFormView(forms.ModelForm):		
+
+	#categoria       = forms.ModelChoiceField(queryset=Categoria.objects.all())
+	#categoria       = forms.ChoiceField(disabled=True)
 	empresa         = forms.CharField(disabled=True)
 	cidade          = forms.CharField(disabled=True)
-	endereço		= forms.CharField(disabled=True)
-	nome_contato	= forms.CharField(disabled=True)
-	num_contato		= forms.CharField(disabled=True)
-	valor_total		= forms.CharField(disabled=True)
-	valor_multa		= forms.CharField(disabled=True)
-	forma_pagto		= forms.CharField(disabled=True)
-	dt_ult_pagto    = forms.CharField(disabled=True)
-	dt_fim_contrato = forms.CharField(disabled=True)
-	dt_prox_reuniao	= forms.CharField(disabled=True)
-	observacoes		= forms.CharField(disabled=True)
+	endereço        = forms.CharField(disabled=True)
+	nome_contato    = forms.CharField(disabled=True)
+	num_contato     = forms.CharField(disabled=True)
+	valor_total     = forms.DecimalField(disabled=True)  
+	valor_multa     = forms.DecimalField(disabled=True)   
+	forma_pagto     = forms.CharField(disabled=True, widget=forms.Textarea)
+	dt_ult_pagto    = forms.DateField(disabled=True) 
+	dt_fim_contrato = forms.DateField(disabled=True) 
+	dt_prox_reuniao = forms.DateField(disabled=True)
+	observacoes     = forms.CharField(disabled=True, widget=forms.Textarea)
+
 	class Meta:
 		model = Orcamento
 		fields = (
@@ -127,4 +123,18 @@ class OrcamentoFormView(forms.ModelForm):
 		'dt_fim_contrato', 
 		'dt_prox_reuniao',	
 		'observacoes',				
+		)
+
+class PagamentoForm(forms.ModelForm):
+	readonly_fields = ('orcamento',)
+	class Meta:
+		model = Pagamento
+		fields = (
+		'orcamento',
+		'descricao',
+		'dt_pagto',
+		'dt_vencto',
+		'valor_pagto',
+		'valor_multa',
+		'valor_desconto',		
 		)

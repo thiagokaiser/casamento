@@ -22,3 +22,14 @@ class Orcamento(models.Model):
 	observacoes		= models.TextField(blank=True)
 	def __str__(self):
 		return self.empresa
+
+class Pagamento(models.Model):
+	orcamento 		= models.ForeignKey('Orcamento', on_delete=models.CASCADE)
+	descricao 		= models.CharField(max_length=40)
+	dt_pagto 		= models.DateField(blank=True, null=True)
+	dt_vencto 		= models.DateField(blank=True, null=True)
+	valor_pagto 	= models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+	valor_multa 	= models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+	valor_desconto 	= models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+	def __str__(self):
+		return self.descricao

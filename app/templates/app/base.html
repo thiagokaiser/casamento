@@ -140,9 +140,10 @@
                             <a href="#"><i class="fa fa-dollar"></i> <span>Orçamentos</span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">
                                 <li><a href="{% url 'app:orcamento_new' %}"><i class="fa fa-circle-o"></i>Cadastro</a></li>
-                                <li><a href="{% url 'app:orcamento_list' filtro='all' %}"><i class="fa fa-circle-o"></i>Consulta</a></li>
+                                <li><a href="{% url 'app:orcamento_list' filtro1='all' filtro2='all' %}"><i class="fa fa-circle-o"></i>Consulta</a></li>
+                                <li><a href="{% url 'app:pagamento_list_all' %}"><i class="fa fa-circle-o"></i>Pagamentos</a></li>
                             </ul>
-                        </li>                                                
+                        </li>                                                                        
                         <li class="treeview">
                             <a href="#"><i class="fa fa-bar-chart"></i> <span>Relatórios</span> <i class="fa fa-angle-left pull-right"></i></a>
                             <ul class="treeview-menu">

@@ -39,10 +39,14 @@ urlpatterns = [
     url(r'^categoria/(?P<pk>\d+)/edita/$', views.Categoria_Edit , name='categoria_edit'),
     url(r'^categoria/(?P<pk>\d+)/delete/$', views.Categoria_Del , name='categoria_del'),
     url(r'^orcamento/cadastra/$', views.Orcamento_New , name='orcamento_new'),
-    url(r'^orcamento/lista/(?P<filtro>\w+)/$', views.Orcamento_List , name='orcamento_list'),
+    url(r'^orcamento/lista/(?P<filtro1>\w+)/(?P<filtro2>\w+)/$', views.Orcamento_List , name='orcamento_list'),
     url(r'^orcamento/filtro/$', views.Orcamento_Filtro , name='orcamento_filtro'),
     url(r'^orcamento/(?P<pk>\d+)/detalhe/$', views.Orcamento_Detail , name='orcamento_detail'),
     url(r'^orcamento/(?P<pk>\d+)/edita/$', views.Orcamento_Edit , name='orcamento_edit'),
     url(r'^orcamento/(?P<pk>\d+)/delete/$', views.Orcamento_Del , name='orcamento_del'),
+    url(r'^orcamento/(?P<pk>\d+)/pagamento/$', views.Pagamento_List , name='pagamento_list'),
+    url(r'^orcamento/(?P<pk>\d+)/anexo/$', views.Anexo_List , name='anexo_list'),
+    url(r'^orcamento/(?P<pk>\d+)/pagamento/novo$', views.Pagamento_New , name='pagamento_new'),
+    url(r'^pagamento/lista/$', views.Pagamento_List_All , name='pagamento_list_all'),
     
 ]

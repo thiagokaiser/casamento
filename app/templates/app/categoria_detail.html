@@ -16,13 +16,14 @@
 
     <div class="box box-primary">            
         <div class="box-body">            
-            <table class="table table-hover" style="width: 100%; max-width: 800px;">
-                {{ form.as_table }}
-            </table>        
             <a class="btn btn-default" href="{% url 'app:categoria_new' %}"><span class="fa fa-file-o"></span></a>
             <a class="btn btn-default" href="{% url 'app:categoria_edit' pk=categoria.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
             <a class="btn btn-default" href="{% url 'app:categoria_del' pk=categoria.pk %}"><span class="glyphicon glyphicon-trash"></span></a>            
-            <a class="btn btn-default" href="{% url 'app:categoria_list' filtro='all' %}"><span class="glyphicon glyphicon-th-list"></span></a>
+            <a class="btn btn-default" href="{% url 'app:categoria_list' filtro='all' %}"><span class="glyphicon glyphicon-search"></span></a>
+            <p></p>
+            <table class="table table-hover" style="width: 100%; max-width: 800px;">
+                {{ form.as_table }}
+            </table>                    
         </div>
     </div>               
 </section><!-- /.content -->	

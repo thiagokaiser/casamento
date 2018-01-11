@@ -17,7 +17,7 @@
     <div class="box box-primary">            
         <div class="box-body">
             <form method="POST" action="{% url 'app:categoria_filtro' %}">{% csrf_token %}
-                <input pattern="[a-zA-Z0-9]+" type="text" id="input_search" name="input_search"></search>
+                <input pattern="[a-zA-Z0-9]+" type="text" id="input_search" name="input_search" value='{{ filtro }}' placeholder="Search Nome ...">
                 <button class="btn btn-default" tupy="submit"><span class="glyphicon glyphicon-search"></span></button>
             </form>
             <br>            

@@ -5,7 +5,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Categoria
+        Orçamento
         <small>Lista</small>
     </h1>                    
 </section>
@@ -16,15 +16,29 @@
 
     <div class="box box-primary">            
         <div class="box-body">
-            <form method="POST" action="{% url 'app:orcamento_filtro' %}">{% csrf_token %}
-                <input pattern="[a-zA-Z0-9]+" type="text" id="input_search" name="input_search"></search>
-                <button class="btn btn-default" tupy="submit"><span class="glyphicon glyphicon-search"></span></button>
+            <form method="POST" action="{% url 'app:orcamento_filtro' %}">{% csrf_token %}            
+                <input class="input" pattern="[a-zA-Z0-9]+" type="text" id="input_search" name="input_search" value='{{ filtro1 }}' placeholder="Empresa ...">
+                <select class=""  id="id_categ" name="id_categ">                
+                    <option value="all">Categoria - Todos</option>                                    
+                {% for categ in categoria %}
+                
+                    <option value="{{ categ.pk }}">{{ categ.nome }}</option>                                    
+                {% endfor %}
+                </select>                
+                <button class="btn btn-default" type="submit" id="btn_filtro"><span class="glyphicon glyphicon-search"></span></button>
             </form>
             <br>            
+            
             <table class="table table-hover" style="width: 100%; max-width: 600px;">
-				<tr><th>Categoria </th><th>Empresa </th></tr>
+				<tr><th>Empresa </th><th>Categoria </th><th>Prox Reuniao</th><th class="hidden-xs">Valor </th></tr>
 				{% for orcamento in orcamento_list %}
-					<tr><td>{{ orcamento.categoria }}</td><td>{{ orcamento.empresa }}</td><td> <a class="btn btn-default" href="{% url 'app:orcamento_detail' pk=orcamento.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a></td></tr>			        
+					<tr>
+                        <td>{{ orcamento.empresa }}</td>
+                        <td>{{ orcamento.categoria }}</td>
+                        <td>{{ orcamento.dt_prox_reuniao }}</td>
+                        <td class="hidden-xs">{{ orcamento.valor_total }}</td><td> <a class="btn btn-default" href="{% url 'app:orcamento_detail' pk=orcamento.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a>
+                        <a class="btn btn-default" href="{% url 'app:pagamento_list' pk=orcamento.pk %}"><span class="glyphicon glyphicon-usd"></span></a></td>
+                    </tr>			        
 			    {% endfor %}
 			</table>
 
@@ -55,17 +69,24 @@
                     <li class="disabled"><span class="fa fa-angle-right"></span></li>      
                     <li class="disabled"><span class="fa fa-angle-double-right"></span></li>
                 {% endif %}                
-            </ul>                       
+            </ul>                      
         </div>
     </div>               
 </section><!-- /.content -->	
 
 {% endblock %}
 
+
 {% block javascript %}
 
-<script type="text/javascript">    
-
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        
+        $("#id_categ").multiselect({
+            //enableFiltering: true,            
+            maxHeight: 200,            
+        });                    
+    });
+    $("#id_categ").val("{{ filtro2 }}"); 
 </script>
-
 {% endblock javascript %}
