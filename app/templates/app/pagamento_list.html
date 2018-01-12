@@ -16,17 +16,30 @@
 
     <div class="box box-primary">            
         <div class="box-body">            
-            <a class="btn btn-default" href="{% url 'app:pagamento_new' pk=orcamento.pk %}"><span class="fa fa-file-o"></span></a>            
+            <a disabled class="btn btn-default" href="{% url 'app:orcamento_new' %}"><span class="fa fa-file-o"></span></a>
+            <a disabled class="btn btn-default" href="{% url 'app:orcamento_edit' pk=orcamento.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a disabled class="btn btn-default" href="{% url 'app:orcamento_del' pk=orcamento.pk %}"><span class="glyphicon glyphicon-trash"></span></a>
+            <a class="btn btn-default" href="{% url 'app:orcamento_list' filtro1='all' filtro2='all' %}"><span class="glyphicon glyphicon-search"></span></a>
             <p></p>
+            <div class="form-group">
+                <p class="form-control">
+                    <b>Empresa: </b> {{ orcamento.empresa }} &nbsp;&nbsp;
+                    <b>Categoria:</b> {{ orcamento.categoria }}   
+                </p>
+            </div>
             <ul class="nav nav-tabs">
                 <li role="presentation"><a href="{% url 'app:orcamento_detail' pk=orcamento.pk %}">Detalhes</a></li>
                 <li role="presentation" class="active"><a href="{% url 'app:pagamento_list' pk=orcamento.pk %}">Pagamentos</a></li>
                 <li role="presentation"><a href="{% url 'app:anexo_list' pk=orcamento.pk %}">Anexos</a></li>
             </ul>            
-            <p></p>
-            <p><b>Empresa:</b>&nbsp; {{ orcamento.empresa }}&nbsp;&nbsp; <b>Categoria:&nbsp;</b> {{ orcamento.categoria }}</p>                        
-            <p> <b>Valor Total:&nbsp;</b> {{ orcamento.valor_total }} &nbsp;&nbsp;<b>Saldo:</b>&nbsp; {{ orcamento.valor_total }} </p>
-            <p> <b>Dt Ultimo Pagto:&nbsp;</b> {{ orcamento.dt_ult_pagto }} 
+            <p></p>            
+            <div class="form-group">
+                <p class="form-control"> 
+                    <b>Valor Total:&nbsp;</b> {{ orcamento.valor_total }} &nbsp;&nbsp;
+                    <b>Saldo:</b>&nbsp; {{ orcamento.valor_total }}  &nbsp;&nbsp;
+                    <b>Ult Pagto:&nbsp;</b> {{ orcamento.dt_ult_pagto }} 
+                </p>
+            </div>
             <p></p>
 
             <table class="table table-hover" style="width: 100%; max-width: 600px;">
@@ -34,13 +47,15 @@
                     <th>Descricao </th>
                     <th>Valor </th>
                     <th>Data Pagto </th>
+                    <th><a class="btn btn-default" href="{% url 'app:pagamento_new' pk=orcamento.pk %}"><span class="fa fa-file-o"></span></a>            
+                    </th>
                 </tr>
                 {% for pagto in pagamento %}
                 <tr>
                     <td>{{ pagto.descricao }}</td>
                     <td>{{ pagto.valor_pagto }}</td>
                     <td>{{ pagto.dt_pagto }}</td>
-                    <td> <a class="btn btn-default" href="{% url 'app:orcamento_detail' pk=orcamento.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a></td>
+                    <td> <a class="btn btn-default" href="{% url 'app:pagamento_detail' pk=pagto.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a></td>
                 </tr>                    
                 {% endfor %}
             </table>

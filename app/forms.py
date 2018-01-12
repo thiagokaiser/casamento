@@ -41,7 +41,7 @@ class RegisterProfileForm(UserCreationForm):
 	def clean_email(self):
 		email = self.cleaned_data['email']
 		if User.objects.filter(email=email).exists() == True:
-			raise ValidationError("A user with that email already exists.")			
+			raise ValidationError("Já existe outro usuário cadastrado com este e-mail.")			
 		return email
 
 
@@ -90,7 +90,7 @@ class OrcamentoForm(forms.ModelForm):
 		'observacoes',				
 		)
 
-class OrcamentoFormView(forms.ModelForm):		
+class OrcamentoFormView(forms.ModelForm):
 
 	#categoria       = forms.ModelChoiceField(queryset=Categoria.objects.all())
 	#categoria       = forms.ChoiceField(disabled=True)
@@ -126,11 +126,10 @@ class OrcamentoFormView(forms.ModelForm):
 		)
 
 class PagamentoForm(forms.ModelForm):
-	readonly_fields = ('orcamento',)
+	
 	class Meta:
 		model = Pagamento
-		fields = (
-		'orcamento',
+		fields = (		
 		'descricao',
 		'dt_pagto',
 		'dt_vencto',

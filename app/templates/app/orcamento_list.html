@@ -36,8 +36,8 @@
                         <td>{{ orcamento.empresa }}</td>
                         <td>{{ orcamento.categoria }}</td>
                         <td>{{ orcamento.dt_prox_reuniao }}</td>
-                        <td class="hidden-xs">{{ orcamento.valor_total }}</td><td> <a class="btn btn-default" href="{% url 'app:orcamento_detail' pk=orcamento.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a>
-                        <a class="btn btn-default" href="{% url 'app:pagamento_list' pk=orcamento.pk %}"><span class="glyphicon glyphicon-usd"></span></a></td>
+                        <td class="hidden-xs">{{ orcamento.valor_total }}</td>
+                        <td> <a class="btn btn-default" href="{% url 'app:orcamento_detail' pk=orcamento.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a></td>
                     </tr>			        
 			    {% endfor %}
 			</table>

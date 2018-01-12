@@ -31,6 +31,8 @@ from .models import (
     Pagamento,
     )
 from django.contrib.postgres.search import SearchVector
+from django.utils import timezone
+
 
 # Create your views here.
 def Home(request):
@@ -251,15 +253,33 @@ def Pagamento_New(request, pk):
     if request.method == 'POST':
         form = PagamentoForm(request.POST)
         if form.is_valid():
-            #pagamento = form.save(commit=False)            
-            #pagamento.orcamento = orcamento
-            form.save()            
-            return redirect('app:orcamento_list', filtro1='all', filtro2='all')
+            pagamento = form.save(commit=False)            
+            pagamento.orcamento = orcamento
+            pagamento.save()            
+            return redirect('app:pagamento_detail', pk=pagamento.pk)
     else:
-        form = PagamentoForm(initial={'orcamento': orcamento.pk})
+        form = PagamentoForm(initial={'valor_pagto': '0',
+                                      'valor_desconto': '0',
+                                      'valor_multa': '0',                                      
+                                      'dt_pagto': timezone.now(),
+                                      'dt_vencto': timezone.now(),
+                                     })
 
     return render(request, 'app/pagamento_new.html', {'form': form, 'orcamento': orcamento})
 
+def Pagamento_Detail(request, pk):        
+    PagamentoDetail = get_object_or_404(Pagamento, pk=pk)
+    orcamento = Orcamento.objects.get(pk=PagamentoDetail.orcamento_id)
+    return render(request, 'app/pagamento_detail.html', {'pagamento':PagamentoDetail, 'orcamento': orcamento})
+
+def Pagamento_Del(request, pk):
+    pagamento = get_object_or_404(Pagamento, pk=pk)        
+    orcamento = Orcamento.objects.get(pk=pagamento.orcamento_id)
+    if request.method=='POST':
+        pagamento.delete()
+        return redirect('app:pagamento_list', pk=orcamento.pk)
+
+    return render(request, 'app/pagamento_del.html', {'pagamento':pagamento, 'orcamento':orcamento})
 
 def Anexo_List(request, pk):
     orcamento = get_object_or_404(Orcamento, pk=pk)
