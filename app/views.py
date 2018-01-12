@@ -281,6 +281,22 @@ def Pagamento_Del(request, pk):
 
     return render(request, 'app/pagamento_del.html', {'pagamento':pagamento, 'orcamento':orcamento})
 
+def Pagamento_Edit(request, pk):
+    pagamento = get_object_or_404(Pagamento, pk=pk)        
+    orcamento = Orcamento.objects.get(pk=pagamento.orcamento_id)
+    if request.method == 'POST':
+        form = PagamentoForm(request.POST, instance=pagamento)
+
+        if form.is_valid():
+            form.save()
+            return redirect('app:pagamento_detail', pk=pk)
+
+    else:
+        form = PagamentoForm(instance=pagamento)
+
+    return render(request, 'app/pagamento_edit.html', {'form': form, 'pagamento':pagamento, 'orcamento': orcamento})
+
+
 def Anexo_List(request, pk):
     orcamento = get_object_or_404(Orcamento, pk=pk)
     pagamento = Pagamento.objects.filter(orcamento=pk)
