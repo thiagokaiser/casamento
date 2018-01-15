@@ -35,7 +35,7 @@
             <p></p>
 
 
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <button class="btn btn-primary" type="submit">Salvar</button>
                 <a class="btn btn-primary" href="{% url 'app:pagamento_detail' pk=pagamento.pk %}">Voltar</a>

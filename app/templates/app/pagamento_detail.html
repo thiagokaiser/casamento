@@ -45,6 +45,7 @@
                 <tr><th>Valor Pagto      </th><td> {{ pagamento.valor_pagto    }} </td></tr>
                 <tr><th>Valor Multa      </th><td> {{ pagamento.valor_multa    }} </td></tr>
                 <tr><th>Valor Desconto   </th><td> {{ pagamento.valor_desconto }} </td></tr>
+                <tr><th>Comprovante      </th><td> {% if pagamento.comprovante %}<a href="{{ pagamento.comprovante.url }}">{{ pagamento.comprovante }} </a> {% endif %} </td></tr>
             </table>                
             <p></p>                        
             </form>

@@ -136,4 +136,5 @@ class PagamentoForm(forms.ModelForm):
 		'valor_pagto',
 		'valor_multa',
 		'valor_desconto',		
+		'comprovante',
 		)

@@ -43,5 +43,10 @@ class Pagamento(models.Model):
 	valor_pagto 	= models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
 	valor_multa 	= models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
 	valor_desconto 	= models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+	comprovante     = models.FileField(upload_to='comprovantes/', blank=True, null=True)
 	def __str__(self):
 		return self.descricao
+
+class Anexo_Orcamento(models.Model):
+	orcamento = models.ForeignKey('Orcamento', on_delete=models.CASCADE)
+	file_name = models.FileField()

@@ -257,9 +257,9 @@ def Pagamento_New(request, pk):
     orcamento = get_object_or_404(Orcamento, pk=pk)
 
     if request.method == 'POST':
-        form = PagamentoForm(request.POST)
+        form = PagamentoForm(request.POST, request.FILES)        
         if form.is_valid():
-            pagamento = form.save(commit=False)            
+            pagamento = form.save(commit=False)   
             pagamento.orcamento = orcamento
             pagamento.save()            
             return redirect('app:pagamento_detail', pk=pagamento.pk)
@@ -291,7 +291,7 @@ def Pagamento_Edit(request, pk):
     pagamento = get_object_or_404(Pagamento, pk=pk)        
     orcamento = Orcamento.objects.get(pk=pagamento.orcamento_id)
     if request.method == 'POST':
-        form = PagamentoForm(request.POST, instance=pagamento)
+        form = PagamentoForm(request.POST, request.FILES, instance=pagamento)
 
         if form.is_valid():            
             form.save()            
