@@ -118,7 +118,6 @@ USE_TZ = True
 
 USE_THOUSAND_SEPARATOR = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
@@ -127,6 +126,8 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MAX_UPLOAD_SIZE = '2621440'
 
 LOGIN_REDIRECT_URL = 'app:home'
 
