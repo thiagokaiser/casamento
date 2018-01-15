@@ -14,6 +14,7 @@ class Orcamento(models.Model):
 	nome_contato	= models.CharField(max_length=40, blank=True)
 	num_contato		= models.CharField(max_length=40, blank=True)
 	valor_total		= models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)   
+	valor_saldo     = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)   
 	valor_multa		= models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)   
 	forma_pagto		= models.TextField(blank=True)   
 	dt_ult_pagto    = models.DateField(blank=True, null=True)   
@@ -21,7 +22,18 @@ class Orcamento(models.Model):
 	dt_prox_reuniao	= models.DateField(blank=True, null=True)   
 	observacoes		= models.TextField(blank=True)
 	def __str__(self):
-		return self.empresa
+		return self.empresa	
+
+	def RecalculaSaldo(self):
+		from .models import (Pagamento)
+		pagamento = Pagamento.objects.filter(orcamento_id=self.pk)
+		tot_pago = 0
+		for i in pagamento:
+			if i.valor_pagto != None:
+				tot_pago = tot_pago + i.valor_pagto
+		if self.valor_total != None and tot_pago != None:
+			self.valor_saldo = self.valor_total - tot_pago
+			self.save()
 
 class Pagamento(models.Model):
 	orcamento 		= models.ForeignKey('Orcamento', on_delete=models.CASCADE)

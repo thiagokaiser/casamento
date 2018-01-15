@@ -32,6 +32,7 @@ from .models import (
     )
 from django.contrib.postgres.search import SearchVector
 from django.utils import timezone
+from django.db.models import Sum
 
 
 # Create your views here.
@@ -170,7 +171,9 @@ def Orcamento_New(request):
             form.save()            
             return redirect('app:orcamento_list', filtro1='all', filtro2='all')
     else:
-        form = OrcamentoForm()
+        form = OrcamentoForm(initial={'valor_total': '0',
+                                      'valor_multa': '0',                                                                            
+                                     })
 
     return render(request, 'app/orcamento_new.html', {'form': form})
 
@@ -190,6 +193,7 @@ def Orcamento_Edit(request, pk):
 
 def Orcamento_Detail(request, pk):        
     OrcamentoDetail = get_object_or_404(Orcamento, pk=pk)
+    OrcamentoDetail.RecalculaSaldo()
     form = OrcamentoFormView(instance=OrcamentoDetail)
     return render(request, 'app/orcamento_detail.html', {'form': form, 'orcamento':OrcamentoDetail})
 
@@ -238,6 +242,8 @@ def Orcamento_Del(request, pk):
 def Pagamento_List(request, pk):
     orcamento = get_object_or_404(Orcamento, pk=pk)
     pagamento = Pagamento.objects.filter(orcamento=pk)
+
+    orcamento.RecalculaSaldo()
     
     return render(request, 'app/pagamento_list.html', {'orcamento':orcamento, 'pagamento': pagamento})
 
@@ -287,8 +293,8 @@ def Pagamento_Edit(request, pk):
     if request.method == 'POST':
         form = PagamentoForm(request.POST, instance=pagamento)
 
-        if form.is_valid():
-            form.save()
+        if form.is_valid():            
+            form.save()            
             return redirect('app:pagamento_detail', pk=pk)
 
     else:

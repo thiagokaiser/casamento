@@ -50,6 +50,5 @@ urlpatterns = [
     url(r'^pagamento/lista/$', views.Pagamento_List_All , name='pagamento_list_all'),
     url(r'^pagamento/(?P<pk>\d+)/detalhe/$', views.Pagamento_Detail , name='pagamento_detail'),
     url(r'^pagamento/(?P<pk>\d+)/delete/$', views.Pagamento_Del , name='pagamento_del'),
-    url(r'^pagamento/(?P<pk>\d+)/edita/$', views.Pagamento_Edit , name='pagamento_edit'),
-    
+    url(r'^pagamento/(?P<pk>\d+)/edita/$', views.Pagamento_Edit , name='pagamento_edit'),    
 ]
