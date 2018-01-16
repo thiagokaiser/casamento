@@ -141,18 +141,22 @@ class RestrictedFileField(forms.FileField):
     def clean(self, *args, **kwargs):
         data = super(RestrictedFileField, self).clean(*args, **kwargs)
         try:
-            if data.content_type in self.content_types:
-                if data.size > self.max_upload_size:
+            if self.content_types != None:
+	            if data.content_type in self.content_types:            	
+	                pass
+	            else:
+	                raise forms.ValidationError(_('File type (%s) is not supported.') % data.content_type)
+
+            if data.size > self.max_upload_size:
                     raise forms.ValidationError(_('File size must be under %s. Current file size is %s.') % (filesizeformat(self.max_upload_size), filesizeformat(data.size)))
-            else:
-                raise forms.ValidationError(_('File type (%s) is not supported.') % data.content_type)
+
         except AttributeError:
             pass
 
         return data
 
 class PagamentoForm(forms.ModelForm):
-	comprovante = RestrictedFileField(content_types=['image/jpeg','image/png', 'application/pdf'], max_upload_size=2621440)
+	comprovante = RestrictedFileField(content_types=['image/jpeg','image/png', 'application/pdf'], max_upload_size=1600000, required=False)
 	class Meta:
 		model = Pagamento
 		fields = (		
