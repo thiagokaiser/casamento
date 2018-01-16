@@ -2,10 +2,14 @@ from django.db import models
 from django.conf import settings
 
 class Categoria(models.Model):
-    nome = models.CharField(max_length=20)
-    descricao = models.CharField(max_length=800)    
-    def __str__(self):
-        return self.nome
+	nome 			= models.CharField(max_length=20)
+	descricao 		= models.CharField(max_length=800)    
+	dt_implant 		= models.DateField(blank=True, null=True)   
+	dt_ult_alter	= models.DateField(blank=True, null=True)   
+	usuar_implant	= models.CharField(max_length=40, blank=True)
+	usuar_ult_alter	= models.CharField(max_length=40, blank=True)
+	def __str__(self):
+		return self.nome
 
 class Orcamento(models.Model):    
 	categoria       = models.ForeignKey('Categoria', on_delete=models.CASCADE)
@@ -22,6 +26,10 @@ class Orcamento(models.Model):
 	dt_fim_contrato = models.DateField(blank=True, null=True)   
 	dt_prox_reuniao	= models.DateField(blank=True, null=True)   
 	observacoes		= models.TextField(blank=True)
+	dt_implant      = models.DateField(blank=True, null=True)   
+	dt_ult_alter    = models.DateField(blank=True, null=True)   
+	usuar_implant   = models.CharField(max_length=40, blank=True)
+	usuar_ult_alter = models.CharField(max_length=40, blank=True)
 	def __str__(self):
 		return self.empresa	
 
@@ -45,6 +53,10 @@ class Pagamento(models.Model):
 	valor_multa 	= models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
 	valor_desconto 	= models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
 	comprovante     = models.FileField(upload_to='comprovantes/', blank=True, null=True)
+	dt_implant      = models.DateField(blank=True, null=True)   
+	dt_ult_alter    = models.DateField(blank=True, null=True)   
+	usuar_implant   = models.CharField(max_length=40, blank=True)
+	usuar_ult_alter = models.CharField(max_length=40, blank=True)
 	def __str__(self):
 		return self.descricao
 

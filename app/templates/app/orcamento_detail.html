@@ -32,7 +32,14 @@
                 <li role="presentation"><a href="{% url 'app:pagamento_list' pk=orcamento.pk %}">Pagamentos</a></li>
                 <li role="presentation"><a href="{% url 'app:anexo_list' pk=orcamento.pk %}">Anexos</a></li>
             </ul>
-            <p></p>                        
+            <p></p>    
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}                    
             <table class="table table-hover" style="width: 100%; max-width: 500px;">                
                 <tr><th>Cidade:          </th><td> {{ orcamento.cidade         }}   </td></tr>
                 <tr><th>Endereço:        </th><td> {{ orcamento.endereço        }}  </td></tr>
@@ -46,6 +53,10 @@
                 <tr><th>Dt Fim Contrato: </th><td> {{ orcamento.dt_fim_contrato}}   </td></tr>
                 <tr><th>Dt Prox Reuniao: </th><td> {{ orcamento.dt_prox_reuniao}}   </td></tr>
                 <tr><th>Observacoes:     </th><td> {{ orcamento.observacoes }}      </td></tr>
+                <tr><th>Dt Implant       </th><td> {{ orcamento.dt_implant }}       </td></tr>
+                <tr><th>Dt Ult Alter     </th><td> {{ orcamento.dt_ult_alter }}     </td></tr>
+                <tr><th>Usuar Implant    </th><td> {{ orcamento.usuar_implant }}    </td></tr>
+                <tr><th>Usuar Ult Alter  </th><td> {{ orcamento.usuar_ult_alter }}  </td></tr>
             </table>            
         </div>
     </div>               

@@ -23,7 +23,7 @@
             <p></p>
             <div class="form-group">
                 <p class="form-control">
-                    <b>Empresa: </b> {{ orcamento.empresa }} &nbsp;&nbsp;
+                    <b>Empresa: </b> {{ orcamento.empresa }} &nbsp;&nbsp;                
                     <b>Categoria:</b> {{ orcamento.categoria }}   
                 </p>
             </div>
@@ -37,6 +37,13 @@
             <a class="btn btn-primary" href="{% url 'app:pagamento_del' pk=pagamento.pk %}">Deletar</a>    
             <a class="btn btn-primary" href="{% url 'app:pagamento_list' pk=orcamento.pk %}">Voltar</a>    
             <p></p>            
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
             <table class="table table-hover" style="width: 100%; max-width: 800px;">                       
                 <tr><th>Orcamento        </th><td> {{ pagamento.orcamento      }} </td></tr>
                 <tr><th>Descricao        </th><td> {{ pagamento.descricao      }} </td></tr>
@@ -46,6 +53,10 @@
                 <tr><th>Valor Multa      </th><td> {{ pagamento.valor_multa    }} </td></tr>
                 <tr><th>Valor Desconto   </th><td> {{ pagamento.valor_desconto }} </td></tr>
                 <tr><th>Comprovante      </th><td> {% if pagamento.comprovante %}<a href="{{ pagamento.comprovante.url }}">{{ pagamento.comprovante }} </a> {% endif %} </td></tr>
+                <tr><th>Dt Implant       </th><td> {{ pagamento.dt_implant }}       </td></tr>
+                <tr><th>Dt Ult Alter     </th><td> {{ pagamento.dt_ult_alter }}     </td></tr>
+                <tr><th>Usuar Implant    </th><td> {{ pagamento.usuar_implant }}    </td></tr>
+                <tr><th>Usuar Ult Alter  </th><td> {{ pagamento.usuar_ult_alter }}  </td></tr>
             </table>                
             <p></p>                        
             </form>

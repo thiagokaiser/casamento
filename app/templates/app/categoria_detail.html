@@ -21,6 +21,13 @@
             <a class="btn btn-default" href="{% url 'app:categoria_del' pk=categoria.pk %}"><span class="glyphicon glyphicon-trash"></span></a>            
             <a class="btn btn-default" href="{% url 'app:categoria_list' filtro='all' %}"><span class="glyphicon glyphicon-search"></span></a>
             <p></p>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %} 
             <table class="table table-hover" style="width: 100%; max-width: 800px;">
                 {{ form.as_table }}
             </table>                    

@@ -33,6 +33,8 @@ from .models import (
 from django.contrib.postgres.search import SearchVector
 from django.utils import timezone
 from django.db.models import Sum
+from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 
 
 # Create your views here.
@@ -96,13 +98,22 @@ def Change_Password(request):
         return render(request, 'accounts/change_password.html', args)
 
 def Categoria_New(request):
+
+    if not request.user.has_perm('app.add_categoria'):
+        messages.error(request, "Usuário sem permissao para adicionar", extra_tags='errorlist')            
+        return redirect('app:categoria_list', filtro='all')
+
     if request.method == 'POST':
         form = CategoriaForm(request.POST)
         if form.is_valid():
-            #anotacao = form.save(commit=False)            
-            #anotacao.data = timezone.now()
-            form.save()            
-            return redirect('app:home')
+            categoria = form.save(commit=False)                        
+            categoria.dt_implant        = timezone.now()
+            categoria.dt_ult_alter      = timezone.now()
+            categoria.usuar_implant     = request.user.username
+            categoria.usuar_ult_alter   = request.user.username
+            categoria.save()            
+            messages.success(request, "Categoria adicionada com sucesso.", extra_tags='successlist')
+            return redirect('app:categoria_list', filtro='all')
     else:
         form = CategoriaForm()
 
@@ -110,11 +121,20 @@ def Categoria_New(request):
 
 def Categoria_Edit(request, pk): 
     CategoriaEdit = get_object_or_404(Categoria, pk=pk)
+
+    if not request.user.has_perm('app.change_categoria'):
+        messages.error(request, "Usuário sem permissao para alterar", extra_tags='errorlist')            
+        return redirect('app:categoria_detail', pk=CategoriaEdit.pk)
+
     if request.method == 'POST':
         form = CategoriaForm(request.POST, instance=CategoriaEdit)
 
-        if form.is_valid():
-            form.save()
+        if form.is_valid():            
+            categoriasave = form.save(commit=False)                        
+            categoriasave.dt_ult_alter      = timezone.now()            
+            categoriasave.usuar_ult_alter   = request.user.username
+            categoriasave.save()
+            messages.success(request, "Categoria editada com sucesso.", extra_tags='successlist')
             return redirect('app:categoria_detail', pk=pk)
 
     else:
@@ -155,6 +175,11 @@ def Categoria_Filtro(request):
 
 def Categoria_Del(request, pk):
     categoria = get_object_or_404(Categoria, pk=pk)    
+
+    if not request.user.has_perm('app.del_orcamento'):
+        messages.error(request, "Usuário sem permissao para deletar", extra_tags='errorlist')            
+        return redirect('app:categoria_detail', pk=categoria.pk)
+
     form = CategoriaFormView(instance=categoria)
     if request.method=='POST':
         categoria.delete()
@@ -163,12 +188,21 @@ def Categoria_Del(request, pk):
     return render(request, 'app/categoria_del.html', {'categoria':categoria, 'form': form})
 
 def Orcamento_New(request):
+
+    if not request.user.has_perm('app.add_orcamento'):
+        messages.error(request, "Usuário sem permissao para adicionar", extra_tags='errorlist')            
+        return redirect('app:orcamento_list', filtro1='all', filtro2='all')
+
     if request.method == 'POST':
         form = OrcamentoForm(request.POST)
         if form.is_valid():
-            #anotacao = form.save(commit=False)            
-            #anotacao.data = timezone.now()
-            form.save()            
+            orcamento = form.save(commit=False)                        
+            orcamento.dt_implant        = timezone.now()
+            orcamento.dt_ult_alter      = timezone.now()
+            orcamento.usuar_implant     = request.user.username
+            orcamento.usuar_ult_alter   = request.user.username
+            orcamento.save()            
+            messages.success(request, "Orcamento adicionado com sucesso.", extra_tags='successlist')
             return redirect('app:orcamento_list', filtro1='all', filtro2='all')
     else:
         form = OrcamentoForm(initial={'valor_total': '0',
@@ -179,11 +213,20 @@ def Orcamento_New(request):
 
 def Orcamento_Edit(request, pk): 
     OrcamentoEdit = get_object_or_404(Orcamento, pk=pk)
+
+    if not request.user.has_perm('app.change_orcamento'):
+        messages.error(request, "Usuário sem permissao para alterar", extra_tags='errorlist')            
+        return redirect('app:orcamento_detail', pk=OrcamentoEdit.pk)
+
     if request.method == 'POST':
         form = OrcamentoForm(request.POST, instance=OrcamentoEdit)
 
         if form.is_valid():
-            form.save()
+            orcamentosave = form.save(commit=False)                        
+            orcamentosave.dt_ult_alter      = timezone.now()            
+            orcamentosave.usuar_ult_alter   = request.user.username
+            orcamentosave.save()
+            messages.success(request, "Orcamento editado com sucesso.", extra_tags='successlist')
             return redirect('app:orcamento_detail', pk=pk)
 
     else:
@@ -231,6 +274,11 @@ def Orcamento_Filtro(request):
 
 def Orcamento_Del(request, pk):
     orcamento = get_object_or_404(Orcamento, pk=pk)    
+
+    if not request.user.has_perm('app.del_orcamento'):
+        messages.error(request, "Usuário sem permissao para deletar", extra_tags='errorlist')            
+        return redirect('app:orcamento_detail', pk=orcamento.pk)
+
     form = OrcamentoFormView(instance=orcamento)
     if request.method=='POST':
         orcamento.delete()
@@ -256,12 +304,21 @@ def Pagamento_List_All(request):
 def Pagamento_New(request, pk):
     orcamento = get_object_or_404(Orcamento, pk=pk)
 
+    if not request.user.has_perm('app.add_pagamento'):
+        messages.error(request, "Usuário sem permissao para adicionar", extra_tags='errorlist')            
+        return redirect('app:pagamento_list', pk=orcamento.pk)
+
     if request.method == 'POST':
         form = PagamentoForm(request.POST, request.FILES)        
         if form.is_valid():
             pagamento = form.save(commit=False)   
-            pagamento.orcamento = orcamento
+            pagamento.orcamento         = orcamento
+            pagamento.dt_implant        = timezone.now()
+            pagamento.dt_ult_alter      = timezone.now()
+            pagamento.usuar_implant     = request.user.username
+            pagamento.usuar_ult_alter   = request.user.username
             pagamento.save()            
+            messages.success(request, "Pagamento adicionado com sucesso.", extra_tags='successlist')
             return redirect('app:pagamento_detail', pk=pagamento.pk)
     else:
         form = PagamentoForm(initial={'valor_pagto': '0',
@@ -281,6 +338,11 @@ def Pagamento_Detail(request, pk):
 def Pagamento_Del(request, pk):
     pagamento = get_object_or_404(Pagamento, pk=pk)        
     orcamento = Orcamento.objects.get(pk=pagamento.orcamento_id)
+
+    if not request.user.has_perm('app.del_pagamento'):
+        messages.error(request, "Usuário sem permissao para excluir", extra_tags='errorlist')            
+        return redirect('app:pagamento_detail', pk=pagamento.pk)
+
     if request.method=='POST':
         pagamento.delete()
         return redirect('app:pagamento_list', pk=orcamento.pk)
@@ -290,14 +352,25 @@ def Pagamento_Del(request, pk):
 def Pagamento_Edit(request, pk):
     pagamento = get_object_or_404(Pagamento, pk=pk)        
     orcamento = Orcamento.objects.get(pk=pagamento.orcamento_id)
+
+    if not request.user.has_perm('app.change_pagamento'):
+        messages.error(request, "Usuário sem permissao para alterar", extra_tags='errorlist')            
+        return redirect('app:pagamento_detail', pk=pagamento.pk)
+
     if request.method == 'POST':
         form = PagamentoForm(request.POST, request.FILES, instance=pagamento)
 
         if form.is_valid():            
-            form.save()            
-            return redirect('app:pagamento_detail', pk=pk)
+            pagamentosave = form.save(commit=False)                        
+            pagamentosave.dt_ult_alter      = timezone.now()            
+            pagamentosave.usuar_ult_alter   = request.user.username
+            pagamentosave.save()
+            messages.success(request, "Pagamento editado com sucesso.", extra_tags='successlist')
+            return redirect('app:pagamento_detail', pk=pk)           
+        else:
+            messages.error(request, "Foram preenchidos dados incorretamente.")            
 
-    else:
+    else:        
         form = PagamentoForm(instance=pagamento)
 
     return render(request, 'app/pagamento_edit.html', {'form': form, 'pagamento':pagamento, 'orcamento': orcamento})
