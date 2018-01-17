@@ -402,7 +402,7 @@ def Anexo_New(request, pk):
             anexo.usuar_implant     = request.user.username
             anexo.usuar_ult_alter   = request.user.username
             anexo.save()            
-            messages.success(request, "Pagamento adicionado com sucesso.", extra_tags='alert alert-success alert-dismissible')
+            messages.success(request, "Anexo adicionado com sucesso.", extra_tags='alert alert-success alert-dismissible')
             return redirect('app:anexo_detail', pk=anexo.pk)
         else:
             messages.error(request, "Foram preenchidos dados incorretamente.", extra_tags='alert alert-error alert-dismissible')
@@ -446,7 +446,7 @@ def Anexo_Edit(request, pk):
             anexosave.dt_ult_alter      = timezone.now()            
             anexosave.usuar_ult_alter   = request.user.username
             anexosave.save()
-            messages.success(request, "Pagamento editado com sucesso.", extra_tags='alert alert-success alert-dismissible')            
+            messages.success(request, "Anexo editado com sucesso.", extra_tags='alert alert-success alert-dismissible')            
             return redirect('app:anexo_detail', pk=pk)           
         else:
             messages.error(request, "Foram preenchidos dados incorretamente.", extra_tags='alert alert-error alert-dismissible')

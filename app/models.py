@@ -62,7 +62,7 @@ class Pagamento(models.Model):
 
 class Anexo_Orcamento(models.Model):
 	orcamento 		= models.ForeignKey('Orcamento', on_delete=models.CASCADE)
-	file_name 		= models.FileField('Arquivo')
+	file_name 		= models.FileField(upload_to='orcamento/')
 	dt_implant      = models.DateField(blank=True, null=True)   
 	dt_ult_alter    = models.DateField(blank=True, null=True)   
 	usuar_implant   = models.CharField(max_length=40, blank=True)

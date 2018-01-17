@@ -179,8 +179,8 @@ class PagamentoForm(forms.ModelForm):
 
 class AnexoForm(forms.ModelForm):
 	file_name = RestrictedFileField(content_types=['image/jpeg','image/png', 'application/pdf'],
-									  max_upload_size=1600000, 
-									  help_text='Arquivos válidos: jpg, png, pdf. Tamanho máximo: 1.5mb')
+									max_upload_size=1600000, 
+									help_text='Arquivos válidos: jpg, png, pdf. Tamanho máximo: 1.5mb')
 	class Meta:
 		model = Anexo_Orcamento
 		fields = (		
