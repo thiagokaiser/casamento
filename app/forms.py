@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
-from .models import Categoria, Orcamento, Pagamento
+from .models import Categoria, Orcamento, Pagamento, Anexo_Orcamento
 from django import forms
 from django.template.defaultfilters import filesizeformat
 from django.utils.translation import ugettext_lazy as _
@@ -177,4 +177,12 @@ class PagamentoForm(forms.ModelForm):
 		'comprovante',
 		)
 
-
+class AnexoForm(forms.ModelForm):
+	file_name = RestrictedFileField(content_types=['image/jpeg','image/png', 'application/pdf'],
+									  max_upload_size=1600000, 
+									  help_text='Arquivos válidos: jpg, png, pdf. Tamanho máximo: 1.5mb')
+	class Meta:
+		model = Anexo_Orcamento
+		fields = (		
+		'file_name',		
+		)

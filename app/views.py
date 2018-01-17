@@ -24,11 +24,13 @@ from .forms import (
     OrcamentoForm,
     OrcamentoFormView,
     PagamentoForm,
+    AnexoForm,
     )
 from .models import (    
     Categoria,
     Orcamento,
     Pagamento,
+    Anexo_Orcamento,
     )
 from django.contrib.postgres.search import SearchVector
 from django.utils import timezone
@@ -320,6 +322,8 @@ def Pagamento_New(request, pk):
             pagamento.save()            
             messages.success(request, "Pagamento adicionado com sucesso.", extra_tags='alert alert-success alert-dismissible')
             return redirect('app:pagamento_detail', pk=pagamento.pk)
+        else:
+            messages.error(request, "Foram preenchidos dados incorretamente.", extra_tags='alert alert-error alert-dismissible')
     else:
         form = PagamentoForm(initial={'valor_pagto': '0',
                                       'valor_desconto': '0',
@@ -375,9 +379,78 @@ def Pagamento_Edit(request, pk):
 
     return render(request, 'app/pagamento_edit.html', {'form': form, 'pagamento':pagamento, 'orcamento': orcamento})
 
-
 def Anexo_List(request, pk):
     orcamento = get_object_or_404(Orcamento, pk=pk)
-    pagamento = Pagamento.objects.filter(orcamento=pk)
+    anexos = Anexo_Orcamento.objects.filter(orcamento=pk)    
     
-    return render(request, 'app/anexo_list.html', {'orcamento':orcamento, 'pagamento': pagamento})
+    return render(request, 'app/anexo_list.html', {'orcamento':orcamento, 'anexos': anexos})
+
+def Anexo_New(request, pk):
+    orcamento = get_object_or_404(Orcamento, pk=pk)    
+
+    if not request.user.has_perm('app.add_anexo_orcamento'):
+        messages.error(request, "Usuário sem permissao para adicionar", extra_tags='alert alert-error alert-dismissible')            
+        return redirect('app:anexo_list', pk=orcamento.pk)
+
+    if request.method == 'POST':
+        form = AnexoForm(request.POST, request.FILES)        
+        if form.is_valid():
+            anexo = form.save(commit=False)   
+            anexo.orcamento         = orcamento
+            anexo.dt_implant        = timezone.now()
+            anexo.dt_ult_alter      = timezone.now()
+            anexo.usuar_implant     = request.user.username
+            anexo.usuar_ult_alter   = request.user.username
+            anexo.save()            
+            messages.success(request, "Pagamento adicionado com sucesso.", extra_tags='alert alert-success alert-dismissible')
+            return redirect('app:anexo_detail', pk=anexo.pk)
+        else:
+            messages.error(request, "Foram preenchidos dados incorretamente.", extra_tags='alert alert-error alert-dismissible')
+    else:
+        form = AnexoForm()
+
+    return render(request, 'app/anexo_new.html', {'form': form, 'orcamento': orcamento})    
+
+def Anexo_Detail(request, pk):        
+    anexo = get_object_or_404(Anexo_Orcamento, pk=pk)
+    orcamento = Orcamento.objects.get(pk=anexo.orcamento_id)
+    return render(request, 'app/anexo_detail.html', {'anexo':anexo, 'orcamento': orcamento})
+
+def Anexo_Del(request, pk):
+    anexo = get_object_or_404(Anexo_Orcamento, pk=pk)        
+    orcamento = Orcamento.objects.get(pk=anexo.orcamento_id)
+
+    if not request.user.has_perm('app.del_pagamento'):
+        messages.error(request, "Usuário sem permissao para excluir", extra_tags='alert alert-error alert-dismissible')            
+        return redirect('app:anexo_detail', pk=anexo.pk)
+
+    if request.method=='POST':
+        anexo.delete()
+        return redirect('app:anexo_list', pk=orcamento.pk)
+
+    return render(request, 'app/anexo_del.html', {'anexo':anexo, 'orcamento':orcamento})
+
+def Anexo_Edit(request, pk):
+    anexo = get_object_or_404(Anexo_Orcamento, pk=pk)        
+    orcamento = Orcamento.objects.get(pk=anexo.orcamento_id)
+
+    if not request.user.has_perm('app.change_anexo_orcamento'):
+        messages.error(request, "Usuário sem permissao para alterar", extra_tags='alert alert-error alert-dismissible')            
+        return redirect('app:anexo_detail', pk=anexo.pk)
+
+    if request.method == 'POST':
+        form = AnexoForm(request.POST, request.FILES, instance=anexo)
+
+        if form.is_valid():            
+            anexosave = form.save(commit=False)                        
+            anexosave.dt_ult_alter      = timezone.now()            
+            anexosave.usuar_ult_alter   = request.user.username
+            anexosave.save()
+            messages.success(request, "Pagamento editado com sucesso.", extra_tags='alert alert-success alert-dismissible')            
+            return redirect('app:anexo_detail', pk=pk)           
+        else:
+            messages.error(request, "Foram preenchidos dados incorretamente.", extra_tags='alert alert-error alert-dismissible')
+    else:        
+        form = AnexoForm(instance=anexo)
+
+    return render(request, 'app/anexo_edit.html', {'form': form, 'anexo':anexo, 'orcamento': orcamento})

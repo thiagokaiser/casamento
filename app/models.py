@@ -61,5 +61,9 @@ class Pagamento(models.Model):
 		return self.descricao
 
 class Anexo_Orcamento(models.Model):
-	orcamento = models.ForeignKey('Orcamento', on_delete=models.CASCADE)
-	file_name = models.FileField()
+	orcamento 		= models.ForeignKey('Orcamento', on_delete=models.CASCADE)
+	file_name 		= models.FileField('Arquivo')
+	dt_implant      = models.DateField(blank=True, null=True)   
+	dt_ult_alter    = models.DateField(blank=True, null=True)   
+	usuar_implant   = models.CharField(max_length=40, blank=True)
+	usuar_ult_alter = models.CharField(max_length=40, blank=True)
