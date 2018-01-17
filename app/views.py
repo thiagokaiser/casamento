@@ -69,15 +69,15 @@ def Register(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('app:profile')            
-                
-        args = {'form': form}
-        return render(request,'accounts/register.html', args)
-        
+                messages.success(request, "Usuário criado com sucesso", extra_tags='alert alert-success alert-dismissible')            
+                return redirect('app:profile')                    
+        else:
+            messages.error(request, "Foram preenchidos dados incorretamente.", extra_tags='alert alert-error alert-dismissible')            
     else:
         form = RegisterProfileForm()
-        args = {'form': form}
-        return render(request,'accounts/register.html', args)
+    
+    args = {'form': form}
+    return render(request,'accounts/register.html', args)
 
 def Change_Password(request):
     if request.method == 'POST':
@@ -100,7 +100,7 @@ def Change_Password(request):
 def Categoria_New(request):
 
     if not request.user.has_perm('app.add_categoria'):
-        messages.error(request, "Usuário sem permissao para adicionar", extra_tags='errorlist')            
+        messages.error(request, "Usuário sem permissao para adicionar", extra_tags='alert alert-error alert-dismissible')            
         return redirect('app:categoria_list', filtro='all')
 
     if request.method == 'POST':
@@ -112,7 +112,7 @@ def Categoria_New(request):
             categoria.usuar_implant     = request.user.username
             categoria.usuar_ult_alter   = request.user.username
             categoria.save()            
-            messages.success(request, "Categoria adicionada com sucesso.", extra_tags='successlist')
+            messages.success(request, "Categoria adicionada com sucesso.", extra_tags='alert alert-success alert-dismissible')
             return redirect('app:categoria_list', filtro='all')
     else:
         form = CategoriaForm()
@@ -123,7 +123,7 @@ def Categoria_Edit(request, pk):
     CategoriaEdit = get_object_or_404(Categoria, pk=pk)
 
     if not request.user.has_perm('app.change_categoria'):
-        messages.error(request, "Usuário sem permissao para alterar", extra_tags='errorlist')            
+        messages.error(request, "Usuário sem permissao para alterar", extra_tags='alert alert-error alert-dismissible')            
         return redirect('app:categoria_detail', pk=CategoriaEdit.pk)
 
     if request.method == 'POST':
@@ -134,7 +134,7 @@ def Categoria_Edit(request, pk):
             categoriasave.dt_ult_alter      = timezone.now()            
             categoriasave.usuar_ult_alter   = request.user.username
             categoriasave.save()
-            messages.success(request, "Categoria editada com sucesso.", extra_tags='successlist')
+            messages.success(request, "Categoria editada com sucesso.", extra_tags='alert alert-success alert-dismissible')
             return redirect('app:categoria_detail', pk=pk)
 
     else:
@@ -177,7 +177,7 @@ def Categoria_Del(request, pk):
     categoria = get_object_or_404(Categoria, pk=pk)    
 
     if not request.user.has_perm('app.del_orcamento'):
-        messages.error(request, "Usuário sem permissao para deletar", extra_tags='errorlist')            
+        messages.error(request, "Usuário sem permissao para deletar", extra_tags='alert alert-error alert-dismissible')            
         return redirect('app:categoria_detail', pk=categoria.pk)
 
     form = CategoriaFormView(instance=categoria)
@@ -190,7 +190,7 @@ def Categoria_Del(request, pk):
 def Orcamento_New(request):
 
     if not request.user.has_perm('app.add_orcamento'):
-        messages.error(request, "Usuário sem permissao para adicionar", extra_tags='errorlist')            
+        messages.error(request, "Usuário sem permissao para adicionar", extra_tags='alert alert-error alert-dismissible')            
         return redirect('app:orcamento_list', filtro1='all', filtro2='all')
 
     if request.method == 'POST':
@@ -202,7 +202,7 @@ def Orcamento_New(request):
             orcamento.usuar_implant     = request.user.username
             orcamento.usuar_ult_alter   = request.user.username
             orcamento.save()            
-            messages.success(request, "Orcamento adicionado com sucesso.", extra_tags='successlist')
+            messages.success(request, "Orcamento adicionado com sucesso.", extra_tags='alert alert-success alert-dismissible')
             return redirect('app:orcamento_list', filtro1='all', filtro2='all')
     else:
         form = OrcamentoForm(initial={'valor_total': '0',
@@ -215,7 +215,7 @@ def Orcamento_Edit(request, pk):
     OrcamentoEdit = get_object_or_404(Orcamento, pk=pk)
 
     if not request.user.has_perm('app.change_orcamento'):
-        messages.error(request, "Usuário sem permissao para alterar", extra_tags='errorlist')            
+        messages.error(request, "Usuário sem permissao para alterar", extra_tags='alert alert-error alert-dismissible')            
         return redirect('app:orcamento_detail', pk=OrcamentoEdit.pk)
 
     if request.method == 'POST':
@@ -226,7 +226,7 @@ def Orcamento_Edit(request, pk):
             orcamentosave.dt_ult_alter      = timezone.now()            
             orcamentosave.usuar_ult_alter   = request.user.username
             orcamentosave.save()
-            messages.success(request, "Orcamento editado com sucesso.", extra_tags='successlist')
+            messages.success(request, "Orcamento editado com sucesso.", extra_tags='alert alert-success alert-dismissible')
             return redirect('app:orcamento_detail', pk=pk)
 
     else:
@@ -276,7 +276,7 @@ def Orcamento_Del(request, pk):
     orcamento = get_object_or_404(Orcamento, pk=pk)    
 
     if not request.user.has_perm('app.del_orcamento'):
-        messages.error(request, "Usuário sem permissao para deletar", extra_tags='errorlist')            
+        messages.error(request, "Usuário sem permissao para deletar", extra_tags='alert alert-error alert-dismissible')            
         return redirect('app:orcamento_detail', pk=orcamento.pk)
 
     form = OrcamentoFormView(instance=orcamento)
@@ -305,7 +305,7 @@ def Pagamento_New(request, pk):
     orcamento = get_object_or_404(Orcamento, pk=pk)
 
     if not request.user.has_perm('app.add_pagamento'):
-        messages.error(request, "Usuário sem permissao para adicionar", extra_tags='errorlist')            
+        messages.error(request, "Usuário sem permissao para adicionar", extra_tags='alert alert-error alert-dismissible')            
         return redirect('app:pagamento_list', pk=orcamento.pk)
 
     if request.method == 'POST':
@@ -318,7 +318,7 @@ def Pagamento_New(request, pk):
             pagamento.usuar_implant     = request.user.username
             pagamento.usuar_ult_alter   = request.user.username
             pagamento.save()            
-            messages.success(request, "Pagamento adicionado com sucesso.", extra_tags='successlist')
+            messages.success(request, "Pagamento adicionado com sucesso.", extra_tags='alert alert-success alert-dismissible')
             return redirect('app:pagamento_detail', pk=pagamento.pk)
     else:
         form = PagamentoForm(initial={'valor_pagto': '0',
@@ -340,7 +340,7 @@ def Pagamento_Del(request, pk):
     orcamento = Orcamento.objects.get(pk=pagamento.orcamento_id)
 
     if not request.user.has_perm('app.del_pagamento'):
-        messages.error(request, "Usuário sem permissao para excluir", extra_tags='errorlist')            
+        messages.error(request, "Usuário sem permissao para excluir", extra_tags='alert alert-error alert-dismissible')            
         return redirect('app:pagamento_detail', pk=pagamento.pk)
 
     if request.method=='POST':
@@ -354,7 +354,7 @@ def Pagamento_Edit(request, pk):
     orcamento = Orcamento.objects.get(pk=pagamento.orcamento_id)
 
     if not request.user.has_perm('app.change_pagamento'):
-        messages.error(request, "Usuário sem permissao para alterar", extra_tags='errorlist')            
+        messages.error(request, "Usuário sem permissao para alterar", extra_tags='alert alert-error alert-dismissible')            
         return redirect('app:pagamento_detail', pk=pagamento.pk)
 
     if request.method == 'POST':
@@ -365,10 +365,10 @@ def Pagamento_Edit(request, pk):
             pagamentosave.dt_ult_alter      = timezone.now()            
             pagamentosave.usuar_ult_alter   = request.user.username
             pagamentosave.save()
-            messages.success(request, "Pagamento editado com sucesso.", extra_tags='successlist')
+            messages.success(request, "Pagamento editado com sucesso.", extra_tags='alert alert-success alert-dismissible')            
             return redirect('app:pagamento_detail', pk=pk)           
         else:
-            messages.error(request, "Foram preenchidos dados incorretamente.")            
+            messages.error(request, "Foram preenchidos dados incorretamente.", extra_tags='alert alert-error alert-dismissible')            
 
     else:        
         form = PagamentoForm(instance=pagamento)
