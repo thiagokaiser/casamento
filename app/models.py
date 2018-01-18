@@ -74,13 +74,13 @@ class Anexo_Orcamento(models.Model):
 	usuar_ult_alter = models.CharField(max_length=40, blank=True)
 
 @receiver(models.signals.post_delete, sender=Pagamento)
-def auto_delete_file_on_delete(sender, instance, **kwargs):    
+def delete_file_on_del_pagto(sender, instance, **kwargs):    
     if instance.comprovante:
         if os.path.isfile(instance.comprovante.path):
             os.remove(instance.comprovante.path)
 
 @receiver(models.signals.pre_save, sender=Pagamento)
-def auto_delete_file_on_change(sender, instance, **kwargs):    
+def delete_file_on_change_pagto(sender, instance, **kwargs):    
     if not instance.pk:
         return False
 
@@ -95,13 +95,13 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
             os.remove(old_file.path)
 
 @receiver(models.signals.post_delete, sender=Anexo_Orcamento)
-def auto_delete_file_on_delete(sender, instance, **kwargs):    
+def delete_file_on_del_anexo(sender, instance, **kwargs):    
     if instance.file_name:
         if os.path.isfile(instance.file_name.path):
             os.remove(instance.file_name.path)
 
 @receiver(models.signals.pre_save, sender=Anexo_Orcamento)
-def auto_delete_file_on_change(sender, instance, **kwargs):    
+def delete_file_on_change_anexo(sender, instance, **kwargs):    
     if not instance.pk:
         return False
 
