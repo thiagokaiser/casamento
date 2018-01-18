@@ -184,5 +184,6 @@ class AnexoForm(forms.ModelForm):
 	class Meta:
 		model = Anexo_Orcamento
 		fields = (		
+		'descricao',
 		'file_name',		
 		)

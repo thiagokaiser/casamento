@@ -1,5 +1,9 @@
 from django.db import models
 from django.conf import settings
+from django.dispatch import receiver
+from django.utils.translation import ugettext_lazy as _
+import os
+import uuid
 
 class Categoria(models.Model):
 	nome 			= models.CharField(max_length=20)
@@ -62,8 +66,51 @@ class Pagamento(models.Model):
 
 class Anexo_Orcamento(models.Model):
 	orcamento 		= models.ForeignKey('Orcamento', on_delete=models.CASCADE)
+	descricao       = models.CharField(max_length=40, blank=True)
 	file_name 		= models.FileField(upload_to='orcamento/')
 	dt_implant      = models.DateField(blank=True, null=True)   
 	dt_ult_alter    = models.DateField(blank=True, null=True)   
 	usuar_implant   = models.CharField(max_length=40, blank=True)
 	usuar_ult_alter = models.CharField(max_length=40, blank=True)
+
+@receiver(models.signals.post_delete, sender=Pagamento)
+def auto_delete_file_on_delete(sender, instance, **kwargs):    
+    if instance.comprovante:
+        if os.path.isfile(instance.comprovante.path):
+            os.remove(instance.comprovante.path)
+
+@receiver(models.signals.pre_save, sender=Pagamento)
+def auto_delete_file_on_change(sender, instance, **kwargs):    
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = Pagamento.objects.get(pk=instance.pk).comprovante
+    except Pagamento.DoesNotExist:
+        return False
+
+    new_file = instance.comprovante
+    if not old_file == new_file:
+        if os.path.isfile(old_file.path):
+            os.remove(old_file.path)
+
+@receiver(models.signals.post_delete, sender=Anexo_Orcamento)
+def auto_delete_file_on_delete(sender, instance, **kwargs):    
+    if instance.file_name:
+        if os.path.isfile(instance.file_name.path):
+            os.remove(instance.file_name.path)
+
+@receiver(models.signals.pre_save, sender=Anexo_Orcamento)
+def auto_delete_file_on_change(sender, instance, **kwargs):    
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = Anexo_Orcamento.objects.get(pk=instance.pk).file_name
+    except Anexo_Orcamento.DoesNotExist:
+        return False
+
+    new_file = instance.file_name
+    if not old_file == new_file:
+        if os.path.isfile(old_file.path):
+            os.remove(old_file.path)

@@ -237,8 +237,7 @@ def Orcamento_Edit(request, pk):
     return render(request, 'app/orcamento_edit.html', {'form': form, 'orcamento':OrcamentoEdit})
 
 def Orcamento_Detail(request, pk):        
-    OrcamentoDetail = get_object_or_404(Orcamento, pk=pk)
-    OrcamentoDetail.RecalculaSaldo()
+    OrcamentoDetail = get_object_or_404(Orcamento, pk=pk)    
     form = OrcamentoFormView(instance=OrcamentoDetail)
     return render(request, 'app/orcamento_detail.html', {'form': form, 'orcamento':OrcamentoDetail})
 
@@ -291,17 +290,36 @@ def Orcamento_Del(request, pk):
 
 def Pagamento_List(request, pk):
     orcamento = get_object_or_404(Orcamento, pk=pk)
-    pagamento = Pagamento.objects.filter(orcamento=pk)
-
-    orcamento.RecalculaSaldo()
+    pagamento = Pagamento.objects.filter(orcamento=pk)    
     
     return render(request, 'app/pagamento_list.html', {'orcamento':orcamento, 'pagamento': pagamento})
 
 def Pagamento_List_All(request):    
-    pagamento = Pagamento.objects.all()
-    
-    return render(request, 'app/pagamento_list_all.html', {'pagamento': pagamento})
+    orcamento = Orcamento.objects.all()    
+    filtro_descricao  = request.GET.get('input_search', '')
+    filtro_empresa    = request.GET.get('id_orcto', 'all')
 
+    filtro_url = '?input_search=' + filtro_descricao + '&id_orcto=' + filtro_empresa
+    filtro = {'url': filtro_url,
+              'filtro1': filtro_descricao,
+              'filtro2': filtro_empresa}
+
+    pagamento = Pagamento.objects.filter(descricao__contains=filtro_descricao).order_by('descricao')    
+    if filtro_empresa != 'all':
+        pagamento = pagamento.filter(orcamento=filtro_empresa)
+
+
+    page    = request.GET.get('page', 1)    
+
+    paginator = Paginator(pagamento, 10)
+    try:
+        pagamentos = paginator.page(page)
+    except PageNotAnInteger:
+        pagamentos = paginator.page(1)
+    except EmptyPage:
+        pagamentos = paginator.page(paginator.num_pages)    
+    
+    return render(request, 'app/pagamento_list_all.html', {'pagamento': pagamentos, 'orcamento': orcamento, 'filtro': filtro})
 
 def Pagamento_New(request, pk):
     orcamento = get_object_or_404(Orcamento, pk=pk)
@@ -320,6 +338,7 @@ def Pagamento_New(request, pk):
             pagamento.usuar_implant     = request.user.username
             pagamento.usuar_ult_alter   = request.user.username
             pagamento.save()            
+            orcamento.RecalculaSaldo()
             messages.success(request, "Pagamento adicionado com sucesso.", extra_tags='alert alert-success alert-dismissible')
             return redirect('app:pagamento_detail', pk=pagamento.pk)
         else:
@@ -349,6 +368,7 @@ def Pagamento_Del(request, pk):
 
     if request.method=='POST':
         pagamento.delete()
+        orcamento.RecalculaSaldo()
         return redirect('app:pagamento_list', pk=orcamento.pk)
 
     return render(request, 'app/pagamento_del.html', {'pagamento':pagamento, 'orcamento':orcamento})
@@ -369,6 +389,7 @@ def Pagamento_Edit(request, pk):
             pagamentosave.dt_ult_alter      = timezone.now()            
             pagamentosave.usuar_ult_alter   = request.user.username
             pagamentosave.save()
+            orcamento.RecalculaSaldo()
             messages.success(request, "Pagamento editado com sucesso.", extra_tags='alert alert-success alert-dismissible')            
             return redirect('app:pagamento_detail', pk=pk)           
         else:

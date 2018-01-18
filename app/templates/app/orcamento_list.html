@@ -45,13 +45,14 @@
             {% endfor %}
             {% endif %}
             <table class="table table-hover" style="width: 100%; max-width: 600px;">
-				<tr><th>Empresa </th><th>Categoria </th><th>Prox Reuniao</th><th class="hidden-xs">Valor </th></tr>
+				<tr><th>Empresa </th><th>Categoria </th><th>Vl Total</th><th>Vl Saldo</th><th class="hidden-xs">Prox Reuniao </th></tr>
 				{% for orcamento in orcamento_list %}
 					<tr>
                         <td>{{ orcamento.empresa }}</td>
                         <td>{{ orcamento.categoria }}</td>
-                        <td>{{ orcamento.dt_prox_reuniao }}</td>
-                        <td class="hidden-xs">{{ orcamento.valor_total }}</td>
+                        <td>{{ orcamento.valor_total }}</td>
+                        <td>{{ orcamento.valor_saldo }}</td>
+                        <td class="hidden-xs">{{ orcamento.dt_prox_reuniao }}</td>
                         <td> <a class="btn btn-default" href="{% url 'app:orcamento_detail' pk=orcamento.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a></td>
                     </tr>			        
 			    {% endfor %}
