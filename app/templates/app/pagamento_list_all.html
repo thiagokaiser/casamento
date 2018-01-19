@@ -17,26 +17,60 @@
     <div class="box box-primary">            
         <div class="box-body">          
             <form method="GET">
-                <input class="input" pattern="[a-zA-Z0-9]+" type="text" id="input_search" name="input_search" value='{{ filtro.filtro1 }}' placeholder="Descricao ...">
-                <select class=""  id="id_orcto" name="id_orcto">                
-                    <option value="all">Empresa - Todas</option>                                    
-                {% for orcto in orcamento %}                
-                    <option value="{{ orcto.pk }}">{{ orcto.empresa }}</option>                                    
-                {% endfor %}
-                </select>                
-                <button class="btn btn-default" type="submit" id="btn_filtro"><span class="glyphicon glyphicon-search"></span></button>
-            </form>
-            <table class="table table-hover" style="width: 100%; max-width: 600px;">
-                <tr><th>Descricao </th><th>Valor </th><th>Empresa</th></tr>
-                {% for pagto in pagamento %}
+                <table>
                     <tr>
-                        <td>{{ pagto.descricao }}</td>
-                        <td>{{ pagto.valor_pagto }}</td>
-                        <td>{{ pagto.orcamento }}</td>
-                        <td> <a class="btn btn-default" href="{% url 'app:pagamento_detail' pk=pagto.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a></td>
-                    </tr>                    
-                {% endfor %}
-            </table>            
+                        <td>
+                            <input class="form-control" pattern="[a-zA-Z0-9]+" type="text" id="input_search" name="input_search" value='{{ filtro.filtro1 }}' placeholder="Descricao ...">
+                        </td>                    
+                        <td>            
+                            <select class=""  id="id_orcto" name="id_orcto">                
+                                <option value="all">Empresa - Todas</option>                                    
+                            {% for orcto in orcamento %}                
+                                <option value="{{ orcto.pk }}">{{ orcto.empresa }}</option>                                    
+                            {% endfor %}
+                            </select>                
+                        </td>
+                        <td>
+                            <button class="btn btn-default" type="submit" id="btn_filtro"><span class="glyphicon glyphicon-search"></span></button>
+                        </td>
+                    </tr>
+                </table>                
+                <br>
+                <label for="reg_pag">Registros por pag.</label>
+                <select class=""  id="reg_pag" name="reg_pag">                
+                    <option value="10">10</option>                                    
+                    <option value="20">20</option>                                    
+                    <option value="50">50</option>                                    
+                    <option value="100">100</option>                
+                </select>     &nbsp;
+                <label for="order_pagto">Ordenar por</label>
+                <select class=""  id="order_pagto" name="order_pagto">                
+                    <option value="orcamento">Empresa</option>
+                    <option value="descricao">Descricao</option>
+                    <option value="dt_pagto">Data Pagto</option>                                    
+                    <option value="valor_pagto">Valor</option>                                                        
+                </select>     
+            </form>                     
+            <div class="table-responsive">
+                <table class="table table-hover" style="width: 100%; max-width: 600px;">
+                    <tr>
+                        <th>Descricao </th>
+                        <th>Valor </th>
+                        <th>Data</th>
+                        <th>Empresa</th>
+                        <th> <a class="btn btn-sm btn-default" href="{% url 'app:pagamento_csv' %}"><span class="fa fa-file-excel-o"></span></a></th>                                            
+                    </tr>
+                    {% for pagto in pagamento %}
+                        <tr>
+                            <td>{{ pagto.descricao }}</td>
+                            <td>{{ pagto.valor_pagto }}</td>
+                            <td>{{ pagto.dt_pagto }}</td>
+                            <td>{{ pagto.orcamento }}</td>
+                            <td> <a class="btn btn-sm btn-default" href="{% url 'app:pagamento_detail' pk=pagto.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a></td>                        
+                        </tr>                    
+                    {% endfor %}
+                </table>        
+            </div>               
 
             <ul class="pagination">
                 {% if pagamento.has_previous %}
@@ -65,6 +99,7 @@
                     <li class="disabled"><span class="fa fa-angle-double-right"></span></li>
                 {% endif %}                
             </ul>
+                       
         </div>
     </div>               
 </section><!-- /.content -->	
@@ -75,11 +110,17 @@
 <script type="text/javascript">
     jQuery(document).ready(function(){
         
-        $("#id_orcto").multiselect({
+        $('#id_orcto').multiselect({
             enableFiltering: true,            
             maxHeight: 400,            
         });                    
     });
-    $("#id_orcto").val("{{ filtro.filtro2 }}"); 
+    $('#id_orcto').val('{{ filtro.filtro2 }}'); 
+    $('#reg_pag').change(function() {        
+        
+    });    
+    $('#reg_pag').val('{{ filtro.pag }}'); 
+    $('#order_pagto').val('{{ filtro.order_pagto }}'); 
+
 </script>
 {% endblock javascript %}

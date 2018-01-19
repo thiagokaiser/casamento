@@ -33,15 +33,6 @@
                 <li role="presentation" class="active"><a href="{% url 'app:anexo_list' pk=orcamento.pk %}">Anexos</a></li>
             </ul>            
             <p></p>            
-            <div class="form-group">
-                <p class="form-control"> 
-                    <b>Valor Total:&nbsp;</b> {{ orcamento.valor_total }} &nbsp;&nbsp;
-                    <b>Saldo:</b>&nbsp; {{ orcamento.valor_saldo  }}  &nbsp;&nbsp;
-                    <b>Ult Pagto:&nbsp;</b> {{ orcamento.dt_ult_pagto }} 
-                </p>
-            </div>
-            <p></p>
-
             {% if messages %}                
             {% for message in messages %}
             <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>
@@ -59,26 +50,25 @@
             {% endfor %}
             {% endif %}
 
-            <table class="table table-hover" style="width: 100%; max-width: 600px;">
-                <tr>
-                    <th>Descricao </th>
-                    <th>Arquivo </th>
-                    <th>Tamanho </th>
-                    <th><a class="btn btn-default" href="{% url 'app:anexo_new' pk=orcamento.pk %}"><span class="fa fa-file-o"></span></a>
-                    </th>
-                </tr>
-                {% for anexo in anexos %}
-                <tr>
-                    <td> {{ anexo.descricao }} </td>
-                    <td> {% if anexo.file_name %}<a href="{{ anexo.file_name.url }}">{{ anexo.file_name }} </a> {% endif %} </td>                   
-                    <td> {% if anexo.file_name.size != Null %}  {{ anexo.file_name.size|filesizeformat }} {% endif %} </td>             
-                    <td> <a class="btn btn-default" href="{% url 'app:anexo_detail' pk=anexo.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a></td>
-                </tr>
-                {% endfor %}
-            </table>
-
-
-            
+            <div class="table-responsive">
+                <table class="table table-hover" style="width: 100%; max-width: 600px;">
+                    <tr>
+                        <th>Descricao </th>
+                        <th>Arquivo </th>
+                        <th>Tamanho </th>
+                        <th><a class="btn btn-default" href="{% url 'app:anexo_new' pk=orcamento.pk %}"><span class="fa fa-file-o"></span></a>
+                        </th>
+                    </tr>
+                    {% for anexo in anexos %}
+                    <tr>
+                        <td> {{ anexo.descricao }} </td>
+                        <td> {% if anexo.file_name %}<a href="{{ anexo.file_name.url }}">{{ anexo.file_name }} </a> {% endif %} </td>                   
+                        <td> {% if anexo.file_name.size != Null %}  {{ anexo.file_name.size|filesizeformat }} {% endif %} </td>             
+                        <td> <a class="btn btn-default" href="{% url 'app:anexo_detail' pk=anexo.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>            
         </div>
     </div>               
 </section><!-- /.content -->	

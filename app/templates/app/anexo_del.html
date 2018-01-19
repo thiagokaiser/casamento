@@ -43,11 +43,13 @@
             <p></p>            
             <a class="btn btn-primary" href="{% url 'app:anexo_del' pk=anexo.pk %}">Deletar</a>    
             <a class="btn btn-primary" href="{% url 'app:anexo_list' pk=orcamento.pk %}">Voltar</a>    
-            <p></p>            
-            <table class="table table-hover" style="width: 100%; max-width: 800px;">                       
-                <tr><th>Arquivo        </th><td> {{ anexo.file_name      }} </td></tr>
-                
-            </table>                
+            <p></p>      
+            <div class="table-responsive">      
+                <table class="table table-hover" style="width: 100%; max-width: 800px;">                       
+                    <tr><th>Arquivo        </th><td> {{ anexo.file_name      }} </td></tr>
+                    
+                </table>                
+            </div>
             <p></p>            
             <a class="btn btn-primary" href="{% url 'app:anexo_list' pk=orcamento.pk %}">Voltar</a>
             </form>

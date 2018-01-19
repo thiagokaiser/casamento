@@ -54,25 +54,26 @@
             {% endfor %}
             {% endif %}
 
-
-            <table class="table table-hover" style="width: 100%; max-width: 800px;">                       
-                <tr><th>Orcamento        </th><td> {{ pagamento.orcamento      }} </td></tr>
-                <tr><th>Descricao        </th><td> {{ pagamento.descricao      }} </td></tr>
-                <tr><th>Dt Pagto         </th><td> {{ pagamento.dt_pagto       }} </td></tr>
-                <tr><th>Dt Vencto        </th><td> {{ pagamento.dt_vencto      }} </td></tr>
-                <tr><th>Valor Pagto      </th><td> {{ pagamento.valor_pagto    }} </td></tr>
-                <tr><th>Valor Multa      </th><td> {{ pagamento.valor_multa    }} </td></tr>
-                <tr><th>Valor Desconto   </th><td> {{ pagamento.valor_desconto }} </td></tr>
-                <tr><th>Comprovante      </th><td> {% if pagamento.comprovante %}<a href="{{ pagamento.comprovante.url }}">{{ pagamento.comprovante }} </a> {% endif %} </td></tr>
-                <tr>
-                    <th>Tamanho          </th>
-                    <td> {% if pagamento.comprovante.size != Null %}  {{ pagamento.comprovante.size|filesizeformat }} {% endif %} </td> 
-                </tr>
-                <tr><th>Dt Implant       </th><td> {{ pagamento.dt_implant }}       </td></tr>
-                <tr><th>Dt Ult Alter     </th><td> {{ pagamento.dt_ult_alter }}     </td></tr>
-                <tr><th>Usuar Implant    </th><td> {{ pagamento.usuar_implant }}    </td></tr>
-                <tr><th>Usuar Ult Alter  </th><td> {{ pagamento.usuar_ult_alter }}  </td></tr>
-            </table>                
+            <div class="table-responsive">
+                <table class="table table-hover" style="width: 100%; max-width: 800px;">                       
+                    <tr><th>Orcamento        </th><td> {{ pagamento.orcamento      }} </td></tr>
+                    <tr><th>Descricao        </th><td> {{ pagamento.descricao      }} </td></tr>
+                    <tr><th>Dt Pagto         </th><td> {{ pagamento.dt_pagto       }} </td></tr>
+                    <!--<tr><th>Dt Vencto        </th><td> {{ pagamento.dt_vencto      }} </td></tr>-->
+                    <tr><th>Valor Pagto      </th><td> {{ pagamento.valor_pagto    }} </td></tr>
+                    <!--<tr><th>Valor Multa      </th><td> {{ pagamento.valor_multa    }} </td></tr>-->
+                    <!--<tr><th>Valor Desconto   </th><td> {{ pagamento.valor_desconto }} </td></tr>-->
+                    <tr><th>Comprovante      </th><td> {% if pagamento.comprovante %}<a href="{{ pagamento.comprovante.url }}">{{ pagamento.comprovante }} </a> {% endif %} </td></tr>
+                    <tr>
+                        <th>Tamanho          </th>
+                        <td> {% if pagamento.comprovante.size != Null %}  {{ pagamento.comprovante.size|filesizeformat }} {% endif %} </td> 
+                    </tr>
+                    <tr><th>Dt Implant       </th><td> {{ pagamento.dt_implant }}       </td></tr>
+                    <tr><th>Dt Ult Alter     </th><td> {{ pagamento.dt_ult_alter }}     </td></tr>
+                    <tr><th>Usuar Implant    </th><td> {{ pagamento.usuar_implant }}    </td></tr>
+                    <tr><th>Usuar Ult Alter  </th><td> {{ pagamento.usuar_ult_alter }}  </td></tr>
+                </table>                
+            </div>
             <p></p>                                    
         </div>
     </div>               

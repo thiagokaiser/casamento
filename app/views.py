@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views import generic
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -34,14 +34,33 @@ from .models import (
     )
 from django.contrib.postgres.search import SearchVector
 from django.utils import timezone
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
-
+from datetime import date
+import csv
 
 # Create your views here.
 def Home(request):
-	return render(request, 'app/base.html', {})
+
+    orcamentos = Orcamento.objects.all()
+    pagamentos = Pagamento.objects.all()
+    d_home = dict()
+    today = date.today()
+    d_home['prox_reuniao'] = orcamentos.filter(dt_prox_reuniao__gte=today).order_by('dt_prox_reuniao')[:10]
+
+    for orcamento in orcamentos:
+        if orcamento.valor_total == None:
+            orcamento.valor_total = 0
+        d_home['total'] = d_home.get('total', 0) + orcamento.valor_total
+    for pagamento in pagamentos:
+        d_home['pagto'] = d_home.get('pagto', 0) + pagamento.valor_pagto
+
+    d_home['percent'] =  round((d_home['pagto'] * 100) / d_home['total'], 0)
+    d_home['dias'] = abs(date(2019, 9, 21) - date.today())
+
+    args = {'home': d_home} 
+    return render(request, 'app/home.html', args)
 
 def Profile(request):
     args = {'user': request.user}
@@ -298,20 +317,26 @@ def Pagamento_List_All(request):
     orcamento = Orcamento.objects.all()    
     filtro_descricao  = request.GET.get('input_search', '')
     filtro_empresa    = request.GET.get('id_orcto', 'all')
+    reg_pag           = request.GET.get('reg_pag', 10)    
+    order_pagto       = request.GET.get('order_pagto', 'orcamento')  
 
-    filtro_url = '?input_search=' + filtro_descricao + '&id_orcto=' + filtro_empresa
+    filtro_url = '?input_search=' + filtro_descricao + '&id_orcto=' + filtro_empresa + '&reg_pag=' + str(reg_pag) + '&order_pagto=' + order_pagto
     filtro = {'url': filtro_url,
               'filtro1': filtro_descricao,
-              'filtro2': filtro_empresa}
+              'filtro2': filtro_empresa,
+              'pag': reg_pag,
+              'order_pagto': order_pagto
+              }
 
-    pagamento = Pagamento.objects.filter(descricao__contains=filtro_descricao).order_by('descricao')    
+    order_pagto = '-' + order_pagto
+    pagamento = Pagamento.objects.filter(descricao__contains=filtro_descricao).order_by(order_pagto)    
     if filtro_empresa != 'all':
         pagamento = pagamento.filter(orcamento=filtro_empresa)
 
 
     page    = request.GET.get('page', 1)    
 
-    paginator = Paginator(pagamento, 10)
+    paginator = Paginator(pagamento, reg_pag)
     try:
         pagamentos = paginator.page(page)
     except PageNotAnInteger:
@@ -345,10 +370,7 @@ def Pagamento_New(request, pk):
             messages.error(request, "Foram preenchidos dados incorretamente.", extra_tags='alert alert-error alert-dismissible')
     else:
         form = PagamentoForm(initial={'valor_pagto': '0',
-                                      'valor_desconto': '0',
-                                      'valor_multa': '0',                                      
-                                      'dt_pagto': timezone.now(),
-                                      'dt_vencto': timezone.now(),
+                                      'dt_pagto': timezone.now(),                                      
                                      })
 
     return render(request, 'app/pagamento_new.html', {'form': form, 'orcamento': orcamento})
@@ -475,3 +497,33 @@ def Anexo_Edit(request, pk):
         form = AnexoForm(instance=anexo)
 
     return render(request, 'app/anexo_edit.html', {'form': form, 'anexo':anexo, 'orcamento': orcamento})
+
+
+def Pagamento_CSV(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="pagamentos.csv"'
+
+    writer = csv.writer(response, delimiter=';')    
+    writer.writerow(['orcamento',
+                     'descricao',       
+                     'dt_pagto',                             
+                     'valor_pagto',                          
+                     'dt_implant',     
+                     'dt_ult_alter',   
+                     'usuar_implant',  
+                     'usuar_ult_alter',
+                    ])
+
+    pagamentos = Pagamento.objects.all().values_list('orcamento',
+                                                     'descricao',       
+                                                     'dt_pagto',                                                             
+                                                     'valor_pagto',                                                          
+                                                     'dt_implant',     
+                                                     'dt_ult_alter',   
+                                                     'usuar_implant',  
+                                                     'usuar_ult_alter',
+                                                    )
+    for pagamento in pagamentos:
+        writer.writerow(pagamento)
+
+    return response

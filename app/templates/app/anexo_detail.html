@@ -54,22 +54,23 @@
             {% endfor %}
             {% endif %}
 
-
-            <table class="table table-hover" style="width: 100%; max-width: 800px;">                                       
-                <tr><th>Descricao       </th><td> {{ anexo.descricao }}       </td></tr>
-                <tr>
-                    <th>Arquivo      </th><td> {% if anexo.file_name %}<a href="{{ anexo.file_name.url }}">{{ anexo.file_name }} </a> {% endif %} </td>
-                </tr>
-                <tr>
-                    <th>Tamanho          </th>
-                    <td> {% if anexo.file_name.size != Null %}  {{ anexo.file_name.size|filesizeformat }} {% endif %} </td> 
-                </tr>
-                <tr><th>Dt Implant       </th><td> {{ anexo.dt_implant }}       </td></tr>
-                <tr><th>Dt Ult Alter     </th><td> {{ anexo.dt_ult_alter }}     </td></tr>
-                <tr><th>Usuar Implant    </th><td> {{ anexo.usuar_implant }}    </td></tr>
-                <tr><th>Usuar Ult Alter  </th><td> {{ anexo.usuar_ult_alter }}  </td></tr>
-                
-            </table>                
+            <div class="table-responsive">
+                <table class="table table-hover" style="width: 100%; max-width: 800px;">                                       
+                    <tr><th>Descricao       </th><td> {{ anexo.descricao }}       </td></tr>
+                    <tr>
+                        <th>Arquivo      </th><td> {% if anexo.file_name %}<a href="{{ anexo.file_name.url }}">{{ anexo.file_name }} </a> {% endif %} </td>
+                    </tr>
+                    <tr>
+                        <th>Tamanho          </th>
+                        <td> {% if anexo.file_name.size != Null %}  {{ anexo.file_name.size|filesizeformat }} {% endif %} </td> 
+                    </tr>
+                    <tr><th>Dt Implant       </th><td> {{ anexo.dt_implant }}       </td></tr>
+                    <tr><th>Dt Ult Alter     </th><td> {{ anexo.dt_ult_alter }}     </td></tr>
+                    <tr><th>Usuar Implant    </th><td> {{ anexo.usuar_implant }}    </td></tr>
+                    <tr><th>Usuar Ult Alter  </th><td> {{ anexo.usuar_ult_alter }}  </td></tr>
+                    
+                </table>                
+            </div>
             <p></p>                                    
         </div>
     </div>               

@@ -50,9 +50,11 @@ urlpatterns = [
     url(r'^pagamento/(?P<pk>\d+)/delete/$', views.Pagamento_Del , name='pagamento_del'),
     url(r'^pagamento/(?P<pk>\d+)/edita/$', views.Pagamento_Edit , name='pagamento_edit'),    
     url(r'^pagamento/lista/$', views.Pagamento_List_All , name='pagamento_list_all'),
+    url(r'^pagamento/exporta/$', views.Pagamento_CSV, name='pagamento_csv'), 
     url(r'^anexo/orcamento/(?P<pk>\d+)/cadastra/$', views.Anexo_New , name='anexo_new'),
     url(r'^anexo/orcamento/(?P<pk>\d+)/lista/$', views.Anexo_List , name='anexo_list'),
     url(r'^anexo/(?P<pk>\d+)/detalhe/$', views.Anexo_Detail , name='anexo_detail'),    
     url(r'^anexo/(?P<pk>\d+)/delete/$', views.Anexo_Del , name='anexo_del'),
-    url(r'^anexo/(?P<pk>\d+)/edita/$', views.Anexo_Edit , name='anexo_edit'),    
+    url(r'^anexo/(?P<pk>\d+)/edita/$', views.Anexo_Edit , name='anexo_edit'),   
+
 ]

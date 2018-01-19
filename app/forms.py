@@ -169,11 +169,8 @@ class PagamentoForm(forms.ModelForm):
 		model = Pagamento
 		fields = (		
 		'descricao',
-		'dt_pagto',
-		'dt_vencto',
-		'valor_pagto',
-		'valor_multa',
-		'valor_desconto',		
+		'dt_pagto',		
+		'valor_pagto',		
 		'comprovante',
 		)
 
