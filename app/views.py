@@ -48,6 +48,8 @@ def Home(request):
     d_home = dict()
     today = date.today()
     d_home['prox_reuniao'] = orcamentos.filter(dt_prox_reuniao__gte=today).order_by('dt_prox_reuniao')[:10]
+    d_home['ult_orcamen'] = orcamentos.order_by('dt_implant')[:10]
+    d_home['ult_pagto'] = pagamentos.order_by('dt_pagto')[:10]
 
     for orcamento in orcamentos:
         if orcamento.valor_total == None:
