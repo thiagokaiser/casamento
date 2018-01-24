@@ -44,24 +44,35 @@ import csv
 def Home(request):
 
     orcamentos = Orcamento.objects.all()
-    pagamentos = Pagamento.objects.all()
-    d_home = dict()
-    today = date.today()
-    d_home['prox_reuniao'] = orcamentos.filter(dt_prox_reuniao__gte=today).order_by('dt_prox_reuniao')[:10]
-    d_home['ult_orcamen'] = orcamentos.order_by('dt_implant')[:10]
-    d_home['ult_pagto'] = pagamentos.order_by('dt_pagto')[:10]
+    pagamentos = Pagamento.objects.all().order_by('dt_pagto')
+    
+    home = dict()
+    today = date.today()    
+    home['prox_reuniao'] = orcamentos.filter(dt_prox_reuniao__gte=today).order_by('dt_prox_reuniao')[:10]
+    home['ult_orcamen'] = orcamentos.order_by('dt_implant')[:10]
+    home['ult_pagto'] = pagamentos.order_by('dt_pagto')[:10]
+    
+    listacor = ['#f56954','#00a65a','#f39c12','#00c0ef','#3c8dbc','#3366CC','#DC3912','#FF9900','#109618','#990099','#3B3EAC','#0099C6',
+                '#DD4477','#66AA00','#B82E2E','#316395','#994499','#22AA99','#AAAA11','#6633CC','#E67300','#8B0707','#329262','#5574A6','#3B3EAC']
 
+    orcamentos = orcamentos.filter(assinado=True)
+    i = 0
     for orcamento in orcamentos:
         if orcamento.valor_total == None:
             orcamento.valor_total = 0
-        d_home['total'] = d_home.get('total', 0) + orcamento.valor_total
+        home['total'] = home.get('total', 0) + orcamento.valor_total
+        i = i + 1
+        orcamento.cor = listacor[i]
+    
     for pagamento in pagamentos:
-        d_home['pagto'] = d_home.get('pagto', 0) + pagamento.valor_pagto
+        home['pagto'] = home.get('pagto', 0) + pagamento.valor_pagto           
 
-    d_home['percent'] =  round((d_home['pagto'] * 100) / d_home['total'], 0)
-    d_home['dias'] = abs(date(2019, 9, 21) - date.today())
+    #home['orcamentos'] = orcamentos.filter(assinado=True)
+    home['orcamentos'] = orcamentos
+    home['percent'] =  round((home['pagto'] * 100) / home['total'], 0)
+    home['dias'] = abs(date(2019, 9, 21) - date.today())
 
-    args = {'home': d_home} 
+    args = {'home': home} 
     return render(request, 'app/home.html', args)
 
 def Profile(request):
@@ -71,7 +82,6 @@ def Profile(request):
 def Edit_profile(request):
     if request.method == 'POST':
         form = EditProfileForm(request.POST, instance=request.user)
-
         if form.is_valid():
             form.save()
             return redirect('app:profile')
@@ -224,6 +234,10 @@ def Orcamento_New(request):
             orcamento.dt_ult_alter      = timezone.now()
             orcamento.usuar_implant     = request.user.username
             orcamento.usuar_ult_alter   = request.user.username
+            if orcamento.assinado == True:
+                orcamento.dt_assinado = timezone.now()            
+            else:
+                orcamento.dt_assinado = None
             orcamento.save()            
             messages.success(request, "Orcamento adicionado com sucesso.", extra_tags='alert alert-success alert-dismissible')
             return redirect('app:orcamento_list', filtro1='all', filtro2='all')
@@ -248,6 +262,10 @@ def Orcamento_Edit(request, pk):
             orcamentosave = form.save(commit=False)                        
             orcamentosave.dt_ult_alter      = timezone.now()            
             orcamentosave.usuar_ult_alter   = request.user.username
+            if orcamentosave.assinado == True:
+                orcamentosave.dt_assinado = timezone.now()            
+            else:
+                orcamentosave.dt_assinado = None
             orcamentosave.save()
             messages.success(request, "Orcamento editado com sucesso.", extra_tags='alert alert-success alert-dismissible')
             return redirect('app:orcamento_detail', pk=pk)

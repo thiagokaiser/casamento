@@ -63,6 +63,8 @@
                     <tr><th>Dt Fim Contrato: </th><td> {{ orcamento.dt_fim_contrato}}   </td></tr>
                     <tr><th>Dt Prox Reuniao: </th><td> {{ orcamento.dt_prox_reuniao}}   </td></tr>
                     <tr><th>Observacoes:     </th><td> {{ orcamento.observacoes }}      </td></tr>
+                    <tr><th>Assinado:        </th><td> <input type="checkbox" name="id_assinado" id="id_assinado" disabled /></td></tr>
+                    <tr><th>Dt Assinado      </th><td> {{ orcamento.dt_assinado }}       </td></tr>
                     <tr><th>Dt Implant       </th><td> {{ orcamento.dt_implant }}       </td></tr>
                     <tr><th>Dt Ult Alter     </th><td> {{ orcamento.dt_ult_alter }}     </td></tr>
                     <tr><th>Usuar Implant    </th><td> {{ orcamento.usuar_implant }}    </td></tr>
@@ -76,5 +78,9 @@
 {% endblock %}
 
 {% block javascript %}
+<script type="text/javascript">
+    $('#id_assinado').prop('checked', {{ orcamento.assinado|lower }});
+    
 
+</script>
 {% endblock javascript %}

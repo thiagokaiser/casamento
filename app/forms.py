@@ -99,7 +99,8 @@ class OrcamentoForm(forms.ModelForm):
 		'dt_ult_pagto',    
 		'dt_fim_contrato', 
 		'dt_prox_reuniao',	
-		'observacoes',				
+		'observacoes',
+		'assinado',
 		)
 
 class OrcamentoFormView(forms.ModelForm):

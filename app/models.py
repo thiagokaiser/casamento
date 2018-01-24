@@ -34,6 +34,8 @@ class Orcamento(models.Model):
 	dt_ult_alter    = models.DateField(blank=True, null=True)   
 	usuar_implant   = models.CharField(max_length=40, blank=True)
 	usuar_ult_alter = models.CharField(max_length=40, blank=True)
+	assinado        = models.BooleanField(default=False)
+	dt_assinado     = models.DateField(blank=True, null=True)   
 	def __str__(self):
 		return self.empresa	
 

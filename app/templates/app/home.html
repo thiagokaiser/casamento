@@ -12,8 +12,10 @@
 
 <!-- Main content -->
 <section class="content">
-    <!-- Your Page Content Here -->                    
 
+    {{ home.chartpagto }}
+
+    <!-- Your Page Content Here -->                
     <div class="box box-info">
         <div class="box-header with-border">
             <h3 class="box-title">Informações Gerais</h3>
@@ -32,7 +34,7 @@
                         <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Pago</span>
+                            <span class="info-box-text">pagamentos realizados</span>
                             <span class="info-box-number">R$ {{ home.pagto }}</span>
 
                             <div class="progress">
@@ -116,9 +118,9 @@
                 <div class="col-md-12">
                     <!-- TABLE: LATEST ORDERS -->
                     <!-- BAR CHART -->
-                    <div class="box box-success">
+                    <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Grafico Legal</h3>
+                            <h3 class="box-title">Pagamentos por periodo</h3>
                             <div class="box-tools pull-right">
                                 <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                                 <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -130,6 +132,23 @@
                             </div>
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- DONUT CHART -->
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Orçamentos assinados</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <canvas id="pieChart" style="height:250px"></canvas>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
                 </div>
             </div>
         </div>
@@ -244,27 +263,10 @@ $(function () {
  */
 
 var areaChartData = {
-  labels: ["January", "February", "March", "April", "May", "June", "July"],
+  labels: ["January", "February", "March", "April", "May", "June", "July","January", "February", "March", "April", "May", "June", "July"],
   datasets: [
     {
-      label: "Electronics",
-      fillColor: "rgba(210, 214, 222, 1)",
-      strokeColor: "rgba(210, 214, 222, 1)",
-      pointColor: "rgba(210, 214, 222, 1)",
-      pointStrokeColor: "#c1c7d1",
-      pointHighlightFill: "#fff",
-      pointHighlightStroke: "rgba(220,220,220,1)",
-      data: [65, 59, 80, 81, 56, 55, 40]
-    },
-    {
-      label: "Digital Goods",
-      fillColor: "rgba(60,141,188,0.9)",
-      strokeColor: "rgba(60,141,188,0.8)",
-      pointColor: "#3b8bba",
-      pointStrokeColor: "rgba(60,141,188,1)",
-      pointHighlightFill: "#fff",
-      pointHighlightStroke: "rgba(60,141,188,1)",
-      data: [28, 48, 40, 19, 86, 27, 90]
+      data: [28, 48, 40, 19, 86, 200, 90,28, 48, 40, 19, 86, 27, 90]
     }
   ]
 };
@@ -275,9 +277,9 @@ var areaChartData = {
 var barChartCanvas = $("#barChart").get(0).getContext("2d");
 var barChart = new Chart(barChartCanvas);
 var barChartData = areaChartData;
-barChartData.datasets[1].fillColor = "#00a65a";
-barChartData.datasets[1].strokeColor = "#00a65a";
-barChartData.datasets[1].pointColor = "#00a65a";
+barChartData.datasets[0].fillColor = "#3c8dbc";
+barChartData.datasets[0].strokeColor = "#3c8dbc";
+barChartData.datasets[0].pointColor = "#3c8dbc";
 var barChartOptions = {
   //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
   scaleBeginAtZero: true,
@@ -308,6 +310,54 @@ var barChartOptions = {
 
 barChartOptions.datasetFill = false;
 barChart.Bar(barChartData, barChartOptions);
+
+//-------------
+//- PIE CHART -
+//-------------
+// Get context with jQuery - using jQuery's .get() method.
+var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+var pieChart = new Chart(pieChartCanvas);
+var PieData = [
+  {% for orcamento in home.orcamentos %}
+  {
+    value: {{ orcamento.valor_total|stringformat:"f" }},
+    color: '{{ orcamento.cor }}',
+    highlight: '{{ orcamento.cor }}',
+    label: '{{ orcamento.empresa }}'
+  },
+  {% endfor %}
+];
+
+var pieOptions = {
+  //Boolean - Whether we should show a stroke on each segment
+  segmentShowStroke: true,
+  //String - The colour of each segment stroke
+  segmentStrokeColor: "#fff",
+  //Number - The width of each segment stroke
+  segmentStrokeWidth: 2,
+  //Number - The percentage of the chart that we cut out of the middle
+  percentageInnerCutout: 50, // This is 0 for Pie charts
+  //Number - Amount of animation steps
+  animationSteps: 100,
+  //String - Animation easing effect
+  animationEasing: "easeOutBounce",
+  //Boolean - Whether we animate the rotation of the Doughnut
+  animateRotate: true,
+  //Boolean - Whether we animate scaling the Doughnut from the centre
+  animateScale: false,
+  //Boolean - whether to make the chart responsive to window resizing
+  responsive: true,
+  // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+  maintainAspectRatio: true,
+  //String - A legend template
+  legendTemplate: ""
+};
+//Create pie or douhnut chart
+// You can switch between pie and douhnut using the method below.
+pieChart.Doughnut(PieData, pieOptions);
+
 });
+
+
 </script>
 {% endblock javascript %}
