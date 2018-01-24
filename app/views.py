@@ -69,7 +69,7 @@ def Home(request):
 
     #home['orcamentos'] = orcamentos.filter(assinado=True)
     home['orcamentos'] = orcamentos
-    home['percent'] =  round((home['pagto'] * 100) / home['total'], 0)
+    home['percent'] =  round((home.get('pagto', 0) * 100) / home.get('total', 0), 0)
     home['dias'] = abs(date(2019, 9, 21) - date.today())
 
     args = {'home': home} 
