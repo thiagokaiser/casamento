@@ -11,9 +11,7 @@
 </section>
 
 <!-- Main content -->
-<section class="content">
-
-    {{ home.chartpagto }}
+<section class="content">      
 
     <!-- Your Page Content Here -->                
     <div class="box box-info">
@@ -120,7 +118,7 @@
                     <!-- BAR CHART -->
                     <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Pagamentos por periodo</h3>
+                            <h3 class="box-title">Pagamentos últimos 12 meses</h3>
                             <div class="box-tools pull-right">
                                 <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                                 <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -263,12 +261,8 @@ $(function () {
  */
 
 var areaChartData = {
-  labels: ["January", "February", "March", "April", "May", "June", "July","January", "February", "March", "April", "May", "June", "July"],
-  datasets: [
-    {
-      data: [28, 48, 40, 19, 86, 200, 90,28, 48, 40, 19, 86, 27, 90]
-    }
-  ]
+  labels: [{% for i in home.pagtomes %}'{{ i.mes }}',{% endfor %}],
+  datasets: [{data: [{% for i in home.pagtomes %}{{ i.valor|stringformat:"f" }},{% endfor %}]}]
 };
 
 //-------------

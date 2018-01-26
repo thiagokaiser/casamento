@@ -34,11 +34,14 @@ from .models import (
     )
 from django.contrib.postgres.search import SearchVector
 from django.utils import timezone
-from django.db.models import Sum, Q
+from django.db.models import Sum, Q, Count
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from datetime import date
+from .funcoes import funcao_data
 import csv
+import itertools
+
 
 # Create your views here.
 def Home(request):
@@ -47,11 +50,35 @@ def Home(request):
     pagamentos = Pagamento.objects.all().order_by('dt_pagto')
     
     home = dict()
+        
+    #----- GERAR GRAFICO BARRA ----------    
+    pagtomes = Pagamento.objects.values('dt_pagto','valor_pagto').order_by('dt_pagto')
+    pagtomesgrp = itertools.groupby(pagtomes, lambda d: d.get('dt_pagto').strftime('%Y-%m'))    
+    pagtomesresult = [{'mes': month, 'valor': sum([x['valor_pagto'] for x in this_day])} 
+        for month, this_day in pagtomesgrp]
+
+    teste = funcao_data(11)
+    newdict = dict()
+    arraydict = []
+
+    for arraydata in teste:
+        mes = arraydata.strftime('%Y-%m')
+        valor = 0
+        for i in pagtomesresult:        
+            if mes == i['mes']:
+                valor = i['valor']        
+        newdict = {'mes': mes , 'valor': valor}
+        arraydict.append(newdict)    
+
+    home['pagtomes'] = arraydict
+    #------------------------------------
+
     today = date.today()    
     home['prox_reuniao'] = orcamentos.filter(dt_prox_reuniao__gte=today).order_by('dt_prox_reuniao')[:10]
     home['ult_orcamen'] = orcamentos.order_by('dt_implant')[:10]
     home['ult_pagto'] = pagamentos.order_by('dt_pagto')[:10]
     
+    #----- GERAR GRAFICO PIZZA ----------    
     listacor = ['#f56954','#00a65a','#f39c12','#00c0ef','#3c8dbc','#3366CC','#DC3912','#FF9900','#109618','#990099','#3B3EAC','#0099C6',
                 '#DD4477','#66AA00','#B82E2E','#316395','#994499','#22AA99','#AAAA11','#6633CC','#E67300','#8B0707','#329262','#5574A6','#3B3EAC']
 
@@ -63,11 +90,10 @@ def Home(request):
         home['total'] = home.get('total', 0) + orcamento.valor_total
         i = i + 1
         orcamento.cor = listacor[i]
-    
-    for pagamento in pagamentos:
-        home['pagto'] = home.get('pagto', 0) + pagamento.valor_pagto           
+    #------------------------------------ 
 
-    #home['orcamentos'] = orcamentos.filter(assinado=True)
+    for pagamento in pagamentos:
+        home['pagto'] = home.get('pagto', 0) + pagamento.valor_pagto               
     home['orcamentos'] = orcamentos
     if home.get('total', 0) != 0:
         home['percent'] =  round((home.get('pagto', 0) * 100) / home.get('total', 0), 0)
