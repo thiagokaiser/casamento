@@ -41,8 +41,6 @@ from datetime import date
 from .funcoes import funcao_data, gera_excel
 import csv
 import itertools
-import xlwt
-
 
 # Create your views here.
 def Home(request):

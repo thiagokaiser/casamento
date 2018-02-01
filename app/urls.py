@@ -57,5 +57,4 @@ urlpatterns = [
     url(r'^anexo/(?P<pk>\d+)/detalhe/$', views.Anexo_Detail , name='anexo_detail'),    
     url(r'^anexo/(?P<pk>\d+)/delete/$', views.Anexo_Del , name='anexo_del'),
     url(r'^anexo/(?P<pk>\d+)/edita/$', views.Anexo_Edit , name='anexo_edit'),   
-
 ]
