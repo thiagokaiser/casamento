@@ -38,9 +38,10 @@ from django.db.models import Sum, Q, Count
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from datetime import date
-from .funcoes import funcao_data
+from .funcoes import funcao_data, gera_excel
 import csv
 import itertools
+import xlwt
 
 
 # Create your views here.
@@ -575,4 +576,13 @@ def Pagamento_CSV(request):
     for pagamento in pagamentos:
         writer.writerow(pagamento)
 
+    return response
+
+def Gera_XLS(request):
+    orcamentos = Orcamento.objects.all()
+
+    response = HttpResponse(content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+    xlsx_data = gera_excel(orcamentos)
+    response.write(xlsx_data)
     return response
