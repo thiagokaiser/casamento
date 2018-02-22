@@ -5,3 +5,4 @@ myvenv
 db.sqlite3
 .DS_Store
 media
+mysite/settings_passwords.py

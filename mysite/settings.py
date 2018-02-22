@@ -148,5 +148,9 @@ LOGIN_EXEMPT_URLS = (
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'thiagokaisersystems@gmail.com'
-EMAIL_HOST_PASSWORD = 'qwe@1234'
 EMAIL_PORT = 587
+
+try:
+    from .settings_passwords import *
+except ImportError:
+    pass
