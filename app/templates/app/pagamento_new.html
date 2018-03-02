@@ -33,22 +33,7 @@
                 <li role="presentation"><a disabled href="{% url 'app:anexo_list' pk=orcamento.pk %}">Anexos</a></li>
             </ul>            
             <p></p>
-            {% if messages %}                
-            {% for message in messages %}
-            <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                <h4><i class="icon fa fa-ban"></i> Alert!</h4>                    
-                {% endif %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                <h4><i class="icon fa fa-check"></i> Alert!</h4>                    
-                {% endif %}
-                <ul class="messages">                    
-                    <li>{{ message }}</li>                    
-                </ul>
-            </div>
-            {% endfor %}
-            {% endif %}
+            
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <button class="btn btn-primary" type="submit">Salvar</button>

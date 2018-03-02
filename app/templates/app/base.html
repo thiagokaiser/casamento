@@ -20,10 +20,9 @@
         <!-- CSS Tema azul -->
         <link rel="stylesheet" type="text/css" href="{% static 'app/dist/css/skins/skin-black-light.css' %}" />        
         <!-- Font Awesome Icons -->
-        <link rel="stylesheet" type="text/css" href="{% static 'app/font-awesome/css/font-awesome.min.css' %}" /> 
+        <link rel="stylesheet" type="text/css" href="{% static 'app/font-awesome/css/font-awesome.min.css' %}" />     
         <!-- Multiselect personalizado -->
-        <link rel="stylesheet" type="text/css" href="{% static 'app/bootstrap-multiselect/dist/css/bootstrap-multiselect.css' %}" />               
-
+        <link rel="stylesheet" type="text/css" href="{% static 'app/bootstrap-multiselect/dist/css/bootstrap-multiselect.css' %}" />                  
 
     </head>
 
@@ -51,39 +50,6 @@
                     <!-- Navbar Right Menu -->
                     <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav">
-                            <!-- Messages: style can be found in dropdown.less-->
-                            <li class="dropdown messages-menu">
-                                <!-- Menu toggle button -->
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-envelope-o"></i>
-                                    <span class="label label-success">1</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="header">Voce tem 1 mensagem</li>
-                                    <li>
-                                        <!-- inner menu: contains the messages -->
-                                        <ul class="menu">
-                                            <li><!-- start message -->
-                                                <a href="#">
-                                                    <div class="pull-left">
-                                                        <!-- User Image -->
-                                                        <img src="{% static 'img/img-user.jpg' %}" class="img-circle" alt="User Image" />
-                                                    </div>
-                                                    <!-- Message title and timestamp -->
-                                                    <h4>
-                                                        Titulo
-                                                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                                    </h4>
-                                                    <!-- The message -->
-                                                    <p>Mensagem</p>
-                                                </a>
-                                            </li><!-- end message -->
-                                        </ul><!-- /.menu -->
-                                    </li>
-                                    <li class="footer"><a href="#">Ver todas mensagens</a></li>
-                                </ul>
-                            </li><!-- /.messages-menu -->
-
                             <!-- User Account Menu -->
                             <li class="dropdown user user-menu">
                                 <!-- Menu Toggle Button -->
@@ -155,8 +121,26 @@
                 <!-- /.sidebar -->
             </aside>
                 
-            <!-- Content Wrapper. Contains page content -->
+            <!-- Content Wrapper. Contains page content -->            
             <div class="content-wrapper">
+
+                {% if messages %}                
+                {% for message in messages %}
+                <div class="mensagem {{ message.tags }}" style="padding: 10px 20px; background: rgb(243, 156, 18); z-index: 999999; font-size: 16px; font-weight: 600;">
+                    <a class="pull-right fecha-msg" href="#" data-toggle="tooltip" data-placement="left" title="" style="color: rgb(255, 255, 255); font-size: 20px;" data-original-title="Fechar!">&times;</a>
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <i class="icon fa fa-ban"></i>
+                    {% endif %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <i class="icon fa fa-check"></i> 
+                    {% endif %}
+                    
+                    {{ message }}                    
+                    
+                </div>
+                {% endfor %}
+                {% endif %}
+
                 {% block content %}
                 
                 {% endblock content %}
@@ -181,13 +165,19 @@
         <!-- Bootstrap 3.3.2 JS -->
         <script type="text/javascript" src="{% static 'app/bootstrap/js/bootstrap.js' %}"></script>
         <!-- AdminLTE App -->
-        <script type="text/javascript" src="{% static 'app/dist/js/app.min.js' %}"></script>        
+        <script type="text/javascript" src="{% static 'app/dist/js/app.min.js' %}"></script>
         <!-- Multiselect personalizado -->
         <script type="text/javascript" src="{% static 'app/bootstrap-multiselect/dist/js/bootstrap-multiselect.js' %}" ></script>        
-        
+
+        <script type="text/javascript">
+            $(".fecha-msg").click(function(e){    
+                $(".mensagem").remove();
+            });
+
+        </script>
         {% block javascript %}
 
         {% endblock javascript %}
-
+        
     </body>
 </html>

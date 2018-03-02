@@ -16,22 +16,6 @@
 
     <div class="box box-primary">            
         <div class="box-body">
-            {% if messages %}                
-            {% for message in messages %}
-            <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                <h4><i class="icon fa fa-ban"></i> Alert!</h4>                    
-                {% endif %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                <h4><i class="icon fa fa-check"></i> Alert!</h4>                    
-                {% endif %}
-                <ul class="messages">                    
-                    <li>{{ message }}</li>                    
-                </ul>
-            </div>
-            {% endfor %}
-            {% endif %}
             <p> Username: {{ user }} </p>
 			<p> First Name: {{ user.first_name }} </p>
 			<p> Last Name: {{ user.last_name }} </p>

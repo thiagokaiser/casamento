@@ -21,22 +21,7 @@
             <a class="btn btn-default" href="{% url 'app:categoria_del' pk=categoria.pk %}"><span class="glyphicon glyphicon-trash"></span></a>            
             <a class="btn btn-default" href="{% url 'app:categoria_list' filtro='all' %}"><span class="glyphicon glyphicon-search"></span></a>
             <p></p>
-            {% if messages %}                
-            {% for message in messages %}
-            <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                <h4><i class="icon fa fa-ban"></i> Alert!</h4>                    
-                {% endif %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                <h4><i class="icon fa fa-check"></i> Alert!</h4>                    
-                {% endif %}
-                <ul class="messages">                    
-                    <li>{{ message }}</li>                    
-                </ul>
-            </div>
-            {% endfor %}
-            {% endif %}
+            
             <div class="table-responsive">
                 <table class="table table-hover" style="width: 100%; max-width: 800px;">
                     {{ form.as_table }}
