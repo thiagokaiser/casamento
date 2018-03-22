@@ -29,8 +29,9 @@ def gera_excel(orcamentos):
         'valign': 'vcenter'
     })
     header = workbook.add_format({
-        'bg_color': '#F7F7F7',
-        'color': 'black',
+        'bold': True,
+        'bg_color': '#337ca5',
+        'color': 'white',
         'align': 'center',
         'valign': 'top',
         'border': 1
@@ -43,6 +44,11 @@ def gera_excel(orcamentos):
     })
     cell_center = workbook.add_format({
         'align': 'center',
+        'valign': 'top',
+        'border': 1
+    })
+    cell_valor = workbook.add_format({
+        'num_format': 'R$ #,##0.00;[Red]R$ #,##0.00',
         'valign': 'top',
         'border': 1
     })
@@ -79,9 +85,9 @@ def gera_excel(orcamentos):
         worksheet_s.write_string(row, 4, orcamento.nome_contato, cell)
         worksheet_s.write_string(row, 5, orcamento.num_contato, cell)
         
-        worksheet_s.write_number(row, 6, Decimal(orcamento.valor_total or 0), cell_center)     
-        worksheet_s.write_number(row, 7, Decimal(orcamento.valor_saldo or 0), cell_center)     
-        worksheet_s.write_number(row, 8, Decimal(orcamento.valor_multa or 0), cell_center)     
+        worksheet_s.write_number(row, 6, Decimal(orcamento.valor_total or 0), cell_valor)     
+        worksheet_s.write_number(row, 7, Decimal(orcamento.valor_saldo or 0), cell_valor)     
+        worksheet_s.write_number(row, 8, Decimal(orcamento.valor_multa or 0), cell_valor)     
 
         worksheet_s.write_string(row, 9, orcamento.forma_pagto, cell)
         
@@ -89,39 +95,39 @@ def gera_excel(orcamentos):
         worksheet_s.write(row, 11, orcamento.dt_prox_reuniao and orcamento.dt_prox_reuniao.strftime('%d/%m/%Y'), cell_center)
      
 
-
+        worksheet_s.merge_range('A7:D7', 'Pagamentos', title)
         # write header
-        worksheet_s.write(6, 0, "Empresa", header)
-        worksheet_s.write(6, 1, "Descricao", header)
-        worksheet_s.write(6, 2, "Data", header)
-        worksheet_s.write(6, 3, "Valor", header)        
+        worksheet_s.write(7, 0, "Empresa", header)
+        worksheet_s.write(7, 1, "Descricao", header)
+        worksheet_s.write(7, 2, "Data", header)
+        worksheet_s.write(7, 3, "Valor", header)        
 
         pagamentos = Pagamento.objects.filter(orcamento=orcamento.pk)
 
         # add data to the table
         for idx, data in enumerate(pagamentos):
-            row = 7 + idx  
-            
+            row = 8 + idx
+
             worksheet_s.write_string(row, 0, data.orcamento.empresa, cell)
             worksheet_s.write_string(row, 1, data.descricao, cell)
             worksheet_s.write(row, 2, data.dt_pagto.strftime('%d/%m/%Y'), cell_center)
-            worksheet_s.write_number(row, 3, data.valor_pagto, cell_center)        
+            worksheet_s.write_number(row, 3, data.valor_pagto, cell_valor)        
 
             row = row + 1
 
         # change column widths
-        worksheet_s.set_column('A:A', 15)  # Date column
-        worksheet_s.set_column('B:B', 15)  # Date column
-        worksheet_s.set_column('C:C', 15)  # Date column        
-        worksheet_s.set_column('D:D', 15)  # Date column
-        worksheet_s.set_column('E:E', 15)  # Date column
-        worksheet_s.set_column('F:F', 15)  # Date column
-        worksheet_s.set_column('G:G', 15)  # Date column
-        worksheet_s.set_column('H:H', 15)  # Date column
-        worksheet_s.set_column('I:I', 15)  # Date column        
-        worksheet_s.set_column('J:J', 15)  # Date column
-        worksheet_s.set_column('K:K', 15)  # Date column
-        worksheet_s.set_column('L:L', 15)  # Date column
+        worksheet_s.set_column('A:A', 15)  
+        worksheet_s.set_column('B:B', 15)  
+        worksheet_s.set_column('C:C', 15)          
+        worksheet_s.set_column('D:D', 15)  
+        worksheet_s.set_column('E:E', 15)  
+        worksheet_s.set_column('F:F', 15)  
+        worksheet_s.set_column('G:G', 15)  
+        worksheet_s.set_column('H:H', 15)  
+        worksheet_s.set_column('I:I', 15)          
+        worksheet_s.set_column('J:J', 15)  
+        worksheet_s.set_column('K:K', 15)  
+        worksheet_s.set_column('L:L', 15)  
         
     
 

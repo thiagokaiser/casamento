@@ -43,12 +43,12 @@
             <p></p>
                         
             <div class="table-responsive">
-                <table class="table table-hover" style="width: 100%; max-width: 600px;">
+                <table class="table table-hover table-condensed" style="width: 100%; max-width: 600px;">
                     <tr>
                         <th>Descricao </th>
                         <th>Valor </th>
                         <th>Data Pagto </th>
-                        <th><a class="btn btn-default" href="{% url 'app:pagamento_new' pk=orcamento.pk %}"><span class="fa fa-file-o"></span></a>            
+                        <th><a class="btn btn-default btn-sm" href="{% url 'app:pagamento_new' pk=orcamento.pk %}"><span class="fa fa-file-o"></span></a>            
                         </th>
                     </tr>
                     {% for pagto in pagamento %}
@@ -56,7 +56,7 @@
                         <td>{{ pagto.descricao }}</td>
                         <td>{{ pagto.valor_pagto }}</td>
                         <td>{{ pagto.dt_pagto }}</td>
-                        <td> <a class="btn btn-default" href="{% url 'app:pagamento_detail' pk=pagto.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a></td>
+                        <td> <a class="btn btn-default btn-sm" href="{% url 'app:pagamento_detail' pk=pagto.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a></td>
                     </tr>                    
                     {% endfor %}
                 </table>

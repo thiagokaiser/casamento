@@ -39,8 +39,7 @@ urlpatterns = [
     url(r'^categoria/(?P<pk>\d+)/edita/$', views.Categoria_Edit , name='categoria_edit'),
     url(r'^categoria/(?P<pk>\d+)/delete/$', views.Categoria_Del , name='categoria_del'),
     url(r'^orcamento/cadastra/$', views.Orcamento_New , name='orcamento_new'),
-    url(r'^orcamento/lista/(?P<filtro1>\w+)/(?P<filtro2>\w+)/$', views.Orcamento_List , name='orcamento_list'),
-    url(r'^orcamento/filtro/$', views.Orcamento_Filtro , name='orcamento_filtro'),
+    url(r'^orcamento/lista/(?P<filtro1>\w+)/(?P<filtro2>\w+)/$', views.Orcamento_List , name='orcamento_list'),    
     url(r'^orcamento/(?P<pk>\d+)/detalhe/$', views.Orcamento_Detail , name='orcamento_detail'),
     url(r'^orcamento/(?P<pk>\d+)/edita/$', views.Orcamento_Edit , name='orcamento_edit'),
     url(r'^orcamento/(?P<pk>\d+)/delete/$', views.Orcamento_Del , name='orcamento_del'),
@@ -57,4 +56,5 @@ urlpatterns = [
     url(r'^anexo/(?P<pk>\d+)/detalhe/$', views.Anexo_Detail , name='anexo_detail'),    
     url(r'^anexo/(?P<pk>\d+)/delete/$', views.Anexo_Del , name='anexo_del'),
     url(r'^anexo/(?P<pk>\d+)/edita/$', views.Anexo_Edit , name='anexo_edit'),   
+    url(r'^side_menu/$', views.Side_Menu , name='side_menu'),    
 ]

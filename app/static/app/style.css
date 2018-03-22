@@ -22,3 +22,14 @@
 	text-align: center;
 	border-radius: 10px;
 }
+.table-condensed th{
+	color:white;
+	background-color: #337ca5;
+}
+.table-condensed td{
+	color: #337ca5;	
+}
+.nav-tabs {
+	background-color: #f7f7f7;	
+	color: black;
+}

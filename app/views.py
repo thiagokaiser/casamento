@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.views import generic
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils import timezone
+from datetime import date
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import (
@@ -16,6 +17,12 @@ from django.contrib.auth.forms import (
     UserCreationForm, 
     PasswordChangeForm
     )
+from django.contrib.postgres.search import SearchVector
+from django.utils import timezone
+from django.db.models import Sum, Q, Count
+from django.db.models.functions import Lower
+from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 from .forms import (    
     EditProfileForm,
     RegisterProfileForm,    
@@ -32,12 +39,6 @@ from .models import (
     Pagamento,
     Anexo_Orcamento,
     )
-from django.contrib.postgres.search import SearchVector
-from django.utils import timezone
-from django.db.models import Sum, Q, Count
-from django.contrib import messages
-from django.core.exceptions import PermissionDenied
-from datetime import date
 from .funcoes import funcao_data, gera_excel
 import csv
 import itertools
@@ -76,6 +77,16 @@ def Home(request):
     home['prox_reuniao'] = orcamentos.filter(dt_prox_reuniao__gte=today).order_by('dt_prox_reuniao')[:10]
     home['ult_orcamen'] = orcamentos.order_by('dt_implant')[:10]
     home['ult_pagto'] = pagamentos.order_by('dt_pagto')[:10]
+
+    for i in home.get('prox_reuniao'):
+        i.data = (i.dt_prox_reuniao - today).days
+        if i.data <= 5:
+            i.label_data = 'label-danger'
+        elif i.data <= 10:
+            i.label_data = 'label-warning'
+        else:
+            i.label_data = 'label-success'
+
     
     #----- GERAR GRAFICO PIZZA ----------    
     listacor = ['#f56954','#00a65a','#f39c12','#00c0ef','#3c8dbc','#3366CC','#DC3912','#FF9900','#109618','#990099','#3B3EAC','#0099C6',
@@ -309,15 +320,29 @@ def Orcamento_Detail(request, pk):
     return render(request, 'app/orcamento_detail.html', {'form': form, 'orcamento':OrcamentoDetail})
 
 def Orcamento_List(request, filtro1, filtro2):    
+    page              = request.GET.get('page', 1)  
+    filtro_empresa    = request.GET.get('input_search', '')    
+    filtro_categ      = request.GET.get('id_categ', 'all')    
+    reg_pag           = request.GET.get('reg_pag', 10)    
+    order_orc         = request.GET.get('order_orc', 'empresa')  
 
-    if filtro1 == 'all':
-        filtro1 = ''        
-    orcamento_list = Orcamento.objects.filter(empresa__contains=filtro1).order_by('empresa')
-    if filtro2 != 'all':
-        orcamento_list = orcamento_list.filter(categoria=filtro2).order_by('empresa')
-
-    page    = request.GET.get('page', 1)
-    paginator = Paginator(orcamento_list, 10)
+    filtro_url = '?input_search=' + filtro_empresa + '&id_categ=' + filtro_categ + '&reg_pag=' + str(reg_pag) + '&order_orc=' + order_orc
+    filtro = {'url': filtro_url,
+              'filtro1': filtro_empresa,
+              'filtro2': filtro_categ,
+              'pag': reg_pag,
+              'order_orc': order_orc
+              }    
+    
+    if order_orc[:1] == '-':
+        order_orc = order_orc[1:]
+        orcamento_list = Orcamento.objects.filter(empresa__contains=filtro_empresa).order_by(Lower(order_orc).desc())
+    else:
+        orcamento_list = Orcamento.objects.filter(empresa__contains=filtro_empresa).order_by(Lower(order_orc))
+    if filtro_categ != 'all':
+        orcamento_list = orcamento_list.filter(categoria=filtro_categ)
+    
+    paginator = Paginator(orcamento_list, reg_pag)
     try:
         orcamentos = paginator.page(page)
     except PageNotAnInteger:
@@ -328,17 +353,9 @@ def Orcamento_List(request, filtro1, filtro2):
     categoria = Categoria.objects.all()
 
     return render(request, 'app/orcamento_list.html', {'orcamento_list': orcamentos,
-                                                       'filtro1': filtro1,
-                                                       'filtro2': filtro2,
+                                                       'filtro': filtro,                                                       
                                                        'categoria': categoria})
 
-def Orcamento_Filtro(request):
-    filtro1 = request.POST.get('input_search', 'all')
-    filtro2 = request.POST.get('id_categ', 'all')
-    if filtro1 == '':
-        filtro1 = 'all'
-    
-    return redirect('app:orcamento_list', filtro1=filtro1, filtro2=filtro2)
 
 def Orcamento_Del(request, pk):
     orcamento = get_object_or_404(Orcamento, pk=pk)    
@@ -584,3 +601,9 @@ def Gera_XLS(request):
     xlsx_data = gera_excel(orcamentos)
     response.write(xlsx_data)
     return response
+
+def Side_Menu(request):
+    if request.session.get('menu_aberto') != '':
+        request.session['menu_aberto'] = not(request.session.get('menu_aberto'))
+
+    return HttpResponse('')

@@ -80,13 +80,14 @@
                         <!-- /.box-header -->
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table class="table no-margin">
+                                <table class="table no-margin table-condensed">
                                     <thead>
                                         <tr>
                                             <th>Empresa</th>
                                             <th>Contato</th>
                                             <th>Telefone</th>
                                             <th>Data Reunião</th>
+                                            <th>Faltam</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -96,7 +97,7 @@
                                             <td>{{reuniao.nome_contato}}</td>
                                             <td>{{reuniao.num_contato}}</td>
                                             <td>{{reuniao.dt_prox_reuniao}}</td>
-                                            <td><span class="label label-success">texto</span></td>                            
+                                            <td><span class="label {{ reuniao.label_data }}">{{ reuniao.data }} dias</span></td>                            
                                         </tr>                    
                                         {% endfor %}
                                     </tbody>
@@ -106,7 +107,7 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer clearfix">            
-                            <a href="#" class="btn btn-sm btn-default btn-flat pull-right">Ver Todas</a>
+                            <a href="{% url 'app:orcamento_list' filtro1='all' filtro2='all' %}" class="btn btn-sm btn-default btn-flat pull-right">Ver Todas</a>
                         </div>
                         <!-- /.box-footer -->
                     </div>
@@ -167,7 +168,7 @@
                         <!-- /.box-header -->
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table class="table no-margin">
+                                <table class="table no-margin table-condensed">
                                     <thead>
                                         <tr>
                                             <th>Empresa</th>
@@ -180,7 +181,7 @@
                                         <tr>
                                             <td>{{ult_orc.empresa}}</td>
                                             <td>{{ult_orc.valor_total}}</td>                                    
-                                            <td>AA </td>
+                                            <td><a class="btn btn-default btn-sm" href="{% url 'app:orcamento_detail' pk=ult_orc.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a> </td>
                                         </tr>                    
                                         {% endfor %}
                                     </tbody>
@@ -190,7 +191,7 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer clearfix">            
-                            <a href="#" class="btn btn-sm btn-default btn-flat pull-right">Ver Todas</a>
+                            <a href="{% url 'app:orcamento_list' filtro1='all' filtro2='all' %}" class="btn btn-sm btn-default btn-flat pull-right">Ver Todas</a>
                         </div>
                         <!-- /.box-footer -->
                     </div>
@@ -211,7 +212,7 @@
                         <!-- /.box-header -->
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table class="table no-margin">
+                                <table class="table no-margin table-condensed">
                                     <thead>
                                         <tr>
                                             <th>Empresa</th>
@@ -222,9 +223,9 @@
                                     <tbody>
                                         {% for ult_pag in home.ult_pagto %}
                                         <tr>
-                                            <td>{{ult_pag.empresa}}</td>
+                                            <td>{{ult_pag.orcamento.empresa}}</td>
                                             <td>{{ult_pag.valor_pagto}}</td>                                    
-                                            <td>AA </td>
+                                            <td><a class="btn btn-default btn-sm" href="{% url 'app:pagamento_detail' pk=ult_pag.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a> </td>
                                         </tr>                    
                                         {% endfor %}
                                     </tbody>
@@ -234,7 +235,7 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer clearfix">            
-                            <a href="#" class="btn btn-sm btn-default btn-flat pull-right">Ver Todas</a>
+                            <a href="{% url 'app:pagamento_list_all' %}" class="btn btn-sm btn-default btn-flat pull-right">Ver Todas</a>
                         </div>
                         <!-- /.box-footer -->
                     </div>

@@ -27,7 +27,7 @@
     </head>
 
 
-    <body class="skin-black-light sidebar-mini">
+    <body class="skin-black-light sidebar-mini {% if request.session.menu_aberto %} sidebar-collapse {% endif %}">
 
         <div class="wrapper">
             <!-- Main Header -->
@@ -172,6 +172,17 @@
         <script type="text/javascript">
             $(".fecha-msg").click(function(e){    
                 $(".mensagem").remove();
+            });
+            $('.sidebar-toggle').click(function(e){
+                $.ajax({
+                    url:"{% url 'app:side_menu' %}",
+                    type: "GET",            
+                    data: {},
+                    success:function(response){                    
+                    },
+                    complete:function(){},
+                    error:function (xhr, textStatus, thrownError){}
+                });                
             });
 
         </script>

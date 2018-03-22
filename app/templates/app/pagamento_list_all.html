@@ -52,12 +52,13 @@
                 </select>     
             </form>                     
             <div class="table-responsive">
-                <table class="table table-hover" style="width: 100%; max-width: 600px;">
+                <table class="table table-hover table-condensed" style="width: 100%; max-width: 900px;">
                     <tr>
                         <th>Descricao </th>
                         <th>Valor </th>
                         <th>Data</th>
-                        <th>Empresa</th>                                                                    
+                        <th>Empresa</th>
+                        <th></th>                                                                    
                     </tr>
                     {% for pagto in pagamento %}
                         <tr>
@@ -65,7 +66,7 @@
                             <td>{{ pagto.valor_pagto }}</td>
                             <td>{{ pagto.dt_pagto }}</td>
                             <td>{{ pagto.orcamento }}</td>
-                            <td> <a class="btn btn-sm btn-default" href="{% url 'app:pagamento_detail' pk=pagto.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a></td>                        
+                            <td> <a class="btn btn-sm btn-default btn-sm" href="{% url 'app:pagamento_detail' pk=pagto.pk %}"><span class="glyphicon glyphicon-list-alt"></span></a></td>                        
                         </tr>                    
                     {% endfor %}
                 </table>        
