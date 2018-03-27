@@ -22,24 +22,17 @@
             <a class="btn btn-default" href="{% url 'app:orcamento_list' filtro1='all' filtro2='all' %}"><span class="glyphicon glyphicon-search"></span></a>
             <p></p>
             <div class="form-group">
-                <p class="form-control">
-                    <b>Empresa: </b> {{ orcamento.empresa }} &nbsp;&nbsp;
-                    <b>Categoria:</b> {{ orcamento.categoria }}   
-                </p>
+                <h3> {{ orcamento.empresa }} - {{ orcamento.categoria }}   </h3>
             </div>
             <ul class="nav nav-tabs">
                 <li role="presentation"><a href="{% url 'app:orcamento_detail' pk=orcamento.pk %}">Detalhes</a></li>
                 <li role="presentation" class="active"><a href="{% url 'app:pagamento_list' pk=orcamento.pk %}">Pagamentos</a></li>
                 <li role="presentation"><a href="{% url 'app:anexo_list' pk=orcamento.pk %}">Anexos</a></li>
             </ul>            
-            <p></p>            
-            <div class="form-group">
-                <p class="form-control"> 
-                    <b>Valor Total:&nbsp;</b> {{ orcamento.valor_total }} &nbsp;&nbsp;
-                    <b>Saldo:</b>&nbsp; {{ orcamento.valor_saldo  }}  &nbsp;&nbsp;
-                    <b>Ult Pagto:&nbsp;</b> {{ orcamento.dt_ult_pagto }} 
-                </p>
-            </div>
+            <p></p>                        
+            <b>Total:&nbsp;</b> {{ orcamento.valor_total }} &nbsp;&nbsp;
+            <b>Saldo:</b>&nbsp; {{ orcamento.valor_saldo  }}  &nbsp;&nbsp;
+            <b>Ult Pagto:&nbsp;</b> {{ orcamento.dt_ult_pagto }}        
             <p></p>
                         
             <div class="table-responsive">
@@ -48,7 +41,7 @@
                         <th>Descricao </th>
                         <th>Valor </th>
                         <th>Data Pagto </th>
-                        <th><a class="btn btn-default btn-sm" href="{% url 'app:pagamento_new' pk=orcamento.pk %}"><span class="fa fa-file-o"></span></a>            
+                        <th><a class="btn btn-default btn-sm" href="{% url 'app:pagamento_new' pk=orcamento.pk %}"><span class="fa fa-plus-circle"></span></a>            
                         </th>
                     </tr>
                     {% for pagto in pagamento %}

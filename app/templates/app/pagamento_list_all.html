@@ -17,39 +17,50 @@
     <div class="box box-primary">            
         <div class="box-body">          
             <form method="GET">
-                <table>
-                    <tr>
-                        <td>
-                            <input class="form-control" pattern="[a-zA-Z0-9]+" type="text" id="input_search" name="input_search" value='{{ filtro.filtro1 }}' placeholder="Descricao ...">
-                        </td>                    
-                        <td>            
-                            <select class=""  id="id_orcto" name="id_orcto">                
-                                <option value="all">Empresa - Todas</option>                                    
-                            {% for orcto in orcamento %}                
-                                <option value="{{ orcto.pk }}">{{ orcto.empresa }}</option>                                    
-                            {% endfor %}
-                            </select>                
-                        </td>
-                        <td>
-                            <button class="btn btn-default" type="submit" id="btn_filtro"><span class="glyphicon glyphicon-search"></span></button>
-                        </td>
-                    </tr>
-                </table>                
-                <br>
-                <label for="reg_pag">Registros por pag.</label>
-                <select class=""  id="reg_pag" name="reg_pag">                
-                    <option value="10">10</option>                                    
-                    <option value="20">20</option>                                    
-                    <option value="50">50</option>                                    
-                    <option value="100">100</option>                
-                </select>     &nbsp;
-                <label for="order_pagto">Ordenar por</label>
-                <select class=""  id="order_pagto" name="order_pagto">                
-                    <option value="orcamento">Empresa</option>
-                    <option value="descricao">Descricao</option>
-                    <option value="dt_pagto">Data Pagto</option>                                    
-                    <option value="valor_pagto">Valor</option>                                                        
-                </select>     
+                <div class="table-responsive">
+                    <table style="min-width: 400px;">
+                        <tr>
+                            <td>
+                                <input class="form-control" pattern="[a-zA-Z0-9]+" type="text" id="input_search" name="input_search" value='{{ filtro.filtro1 }}' placeholder="Descricao ...">
+                            </td>                    
+                            <td>            
+                                <select class=""  id="id_orcto" name="id_orcto">                
+                                    <option value="all">Empresa - Todas</option>                                    
+                                {% for orcto in orcamento %}                
+                                    <option value="{{ orcto.pk }}">{{ orcto.empresa }}</option>                                    
+                                {% endfor %}
+                                </select>                
+                                <button class="btn btn-default" type="submit" id="btn_filtro"><span class="glyphicon glyphicon-search"></span></button>
+                            </td>
+                            <td>
+                                
+                            </td>
+                        </tr>               
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="reg_pag">Registros por pag.</label>
+                                <select class=""  id="reg_pag" name="reg_pag">                
+                                    <option value="10">10</option>                                    
+                                    <option value="20">20</option>                                    
+                                    <option value="50">50</option>                                    
+                                    <option value="100">100</option>                
+                                </select>     
+                            </td>
+                            <td>
+                                <label for="order_pagto">Ordenar por</label>
+                                <select class=""  id="order_pagto" name="order_pagto">                
+                                    <option value="orcamento">Empresa</option>
+                                    <option value="descricao">Descricao</option>
+                                    <option value="dt_pagto">Data Pagto</option>                                    
+                                    <option value="valor_pagto">Valor</option>                                                        
+                                </select>     
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </form>                     
             <div class="table-responsive">
                 <table class="table table-hover table-condensed" style="width: 100%; max-width: 900px;">

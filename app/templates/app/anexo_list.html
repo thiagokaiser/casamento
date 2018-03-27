@@ -22,10 +22,7 @@
             <a class="btn btn-default" href="{% url 'app:orcamento_list' filtro1='all' filtro2='all' %}"><span class="glyphicon glyphicon-search"></span></a>
             <p></p>
             <div class="form-group">
-                <p class="form-control">
-                    <b>Empresa: </b> {{ orcamento.empresa }} &nbsp;&nbsp;
-                    <b>Categoria:</b> {{ orcamento.categoria }}   
-                </p>
+                <h3> {{ orcamento.empresa }} - {{ orcamento.categoria }}   </h3>
             </div>
             <ul class="nav nav-tabs">
                 <li role="presentation"><a href="{% url 'app:orcamento_detail' pk=orcamento.pk %}">Detalhes</a></li>
@@ -40,7 +37,7 @@
                         <th>Descricao </th>
                         <th>Arquivo </th>
                         <th>Tamanho </th>
-                        <th><a class="btn btn-default btn-sm" href="{% url 'app:anexo_new' pk=orcamento.pk %}"><span class="fa fa-file-o"></span></a>
+                        <th><a class="btn btn-default btn-sm" href="{% url 'app:anexo_new' pk=orcamento.pk %}"><span class="fa fa-plus-circle"></span></a>
                         </th>
                     </tr>
                     {% for anexo in anexos %}

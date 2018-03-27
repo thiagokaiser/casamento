@@ -16,45 +16,55 @@
 
     <div class="box box-primary">            
         <div class="box-body">
-            <form method="GET">
-                <table>
-                    <tr>
-                        <td>
-                            <input class="input form-control" pattern="[a-zA-Z0-9]+" type="text" id="input_search" name="input_search" placeholder="Empresa ..." value="{{ filtro.filtro1 }}">
-                        </td>
-                        <td>
-                            <select class=""  id="id_categ" name="id_categ">                
-                                <option value="all">Categoria - Todos</option>                                    
-                                {% for categ in categoria %}                
-                                    <option value="{{ categ.pk }}">{{ categ.nome }}</option>                                    
-                                {% endfor %}
-                            </select>                
-                        </td>
-                        <td>
-                            <button class="btn btn-default" type="submit" id="btn_filtro"><span class="glyphicon glyphicon-search"></span></button>
-                        </td>
-                    </tr>
-                </table>
-                <br>
-                <label for="reg_pag">Registros por pag.</label>
-                <select class=""  id="reg_pag" name="reg_pag">                
-                    <option value="10">10</option>                                    
-                    <option value="20">20</option>                                    
-                    <option value="50">50</option>                                    
-                    <option value="100">100</option>                
-                </select>     &nbsp;
-                <label for="order_orc">Ordenar por</label>
-                <select class=""  id="order_orc" name="order_orc">                
-                    <option value="empresa">+Empresa</option>                    
-                    <option value="-empresa">-Empresa</option>                    
-                    <option value="dt_prox_reuniao">+Dt Prox Reuniao</option>                                    
-                    <option value="-dt_prox_reuniao">-Dt Prox Reuniao</option>                                    
-                    <option value="valor_total">+Valor</option>                                                        
-                    <option value="-valor_total">-Valor</option>                                                        
-                </select>    
+            <form method="GET">                
+                <div class="table-responsive">
+                    <table style="min-width: 400px;">
+                        <tr>
+                            <td>
+                                <input class="input form-control" pattern="[a-zA-Z0-9]+" type="text" id="input_search" name="input_search" placeholder="Empresa ..." value="{{ filtro.filtro1 }}">
+                            </td>
+                            <td>
+                                <select class=""  id="id_categ" name="id_categ">                
+                                    <option value="all">Categoria - Todos</option>                                    
+                                    {% for categ in categoria %}                
+                                        <option value="{{ categ.pk }}">{{ categ.nome }}</option>                                    
+                                    {% endfor %}
+                                </select>                
+                                <button class="btn btn-default" type="submit" id="btn_filtro"><span class="glyphicon glyphicon-search"></span></button>
+                            </td>
+                            <td>
+                                
+                            </td>
+                        </tr>                    
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>                
+                                <label for="reg_pag">Registros por pag.</label>
+                                <select class=""  id="reg_pag" name="reg_pag">                
+                                    <option value="10">10</option>                                    
+                                    <option value="20">20</option>                                    
+                                    <option value="50">50</option>                                    
+                                    <option value="100">100</option>                
+                                </select>     
+                            </td>
+                            <td>
+                                <label for="order_orc">Ordenar por</label>
+                                <select class=""  id="order_orc" name="order_orc">                
+                                    <option value="empresa">+Empresa</option>                    
+                                    <option value="-empresa">-Empresa</option>                    
+                                    <option value="dt_prox_reuniao">+Dt Prox Reuniao</option>                                    
+                                    <option value="-dt_prox_reuniao">-Dt Prox Reuniao</option>                                    
+                                    <option value="valor_total">+Valor</option>                                                        
+                                    <option value="-valor_total">-Valor</option>                                                        
+                                </select>    
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </form>
-            <br>            
-            
+                        
             <div class="table-responsive">
                 <table class="table table-hover table-condensed" style="width: 100%; max-width: 900px;">
     				<tr><th>Empresa </th><th>Categoria </th><th>Vl Total</th><th>Vl Saldo</th><th class="hidden-xs">Prox Reuniao </th><th></th></tr>

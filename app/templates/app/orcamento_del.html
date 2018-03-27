@@ -15,19 +15,14 @@
     <!-- Your Page Content Here -->                    
 
     <div class="box box-primary">            
-        <div class="box-body">            
-        	<form method="post">{% csrf_token %}
-				<div class="divdeleta">
-					<h4>Are you sure you want to delete ?</h4>
-					<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-ok"></span> </button>
-				    <a class="btn btn-default" href="{% url 'app:orcamento_detail' pk=orcamento.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
-				    <p>
-			    </div>
-			</form>
+        <div class="box-body">                    	
             <a class="btn btn-default" href="{% url 'app:orcamento_new' %}"><span class="fa fa-file-o"></span></a>
             <a class="btn btn-default" href="{% url 'app:orcamento_edit' pk=orcamento.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
             <a class="btn btn-default" href="{% url 'app:orcamento_del' pk=orcamento.pk %}"><span class="glyphicon glyphicon-trash"></span></a>            
             <a class="btn btn-default" href="{% url 'app:orcamento_list' filtro1='all' filtro2='all' %}"><span class="glyphicon glyphicon-search"></span></a>            
+            <div class="form-group">
+                <h3> {{ orcamento.empresa }} - {{ orcamento.categoria }}   </h3>
+            </div>
             <p></p>
             <ul class="nav nav-tabs">
                 <li role="presentation" class="active"><a href="{% url 'app:orcamento_detail' pk=orcamento.pk %}">Detalhes</a></li>
@@ -35,21 +30,32 @@
                 <li role="presentation"><a href="{% url 'app:anexo_list' pk=orcamento.pk %}">Anexos</a></li>
             </ul>
             <p></p>
-            <table class="table table-hover" style="width: 100%; max-width: 500px;">
-                <tr><th>Categoria:       </th><td> {{ orcamento.categoria      }}   <td></tr>
-                <tr><th>Empresa:         </th><td> {{ orcamento.empresa        }}   <td></tr>
-                <tr><th>Cidade:          </th><td> {{ orcamento.cidade         }}   <td></tr>
-                <tr><th>Endereço:        </th><td> {{ orcamento.endereço        }}  <td></tr>
-                <tr><th>Nome Contato:    </th><td> {{ orcamento.nome_contato    }}  <td></tr>
-                <tr><th>Num Contato:     </th><td> {{ orcamento.num_contato     }}  <td></tr>
-                <tr><th>Valor Total:     </th><td> {{ orcamento.valor_total     }}  <td></tr>
-                <tr><th>Valor Multa:     </th><td> {{ orcamento.valor_multa     }}  <td></tr>
-                <tr><th>Forma Pagto:     </th><td> {{ orcamento.forma_pagto     }}  <td></tr>
-                <tr><th>Dt Ult Pagto:    </th><td> {{ orcamento.dt_ult_pagto   }}   <td></tr>
-                <tr><th>Dt Fim Contrato: </th><td> {{ orcamento.dt_fim_contrato}}   <td></tr>
-                <tr><th>Dt Prox Reuniao: </th><td> {{ orcamento.dt_prox_reuniao}}   <td></tr>
-                <tr><th>Observacoes:     </th><td> {{ orcamento.observacoes }}      <td></tr>
-            </table>            
+            <div class="form-group divdeleta">
+                <form method="post">{% csrf_token %}                                    
+                    <h4>Tem certeza que deseja deletar o orcamento abaixo ?</h4>
+                    <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-ok"></span> </button>
+                    <a class="btn btn-default" href="{% url 'app:orcamento_detail' pk=orcamento.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+                    <p></p>
+                </form>                     
+            </div>
+            <div class="divdeleta2">
+                <table class="table table-hover" style="width: 100%; max-width: 500px;">
+                    <tr><th>Cidade:          </th><td> {{ orcamento.cidade         }}   </td></tr>
+                    <tr><th>Endereço:        </th><td> {{ orcamento.endereço        }}  </td></tr>
+                    <tr><th>Nome Contato:    </th><td> {{ orcamento.nome_contato    }}  </td></tr>
+                    <tr><th>Num Contato:     </th><td> {{ orcamento.num_contato     }}  </td></tr>
+                    <tr><th>Valor Total:     </th><td> {{ orcamento.valor_total     }}  </td></tr>
+                    <tr><th>Valor Saldo:     </th><td> {{ orcamento.valor_saldo     }}  </td></tr>
+                    <tr><th>Valor Multa:     </th><td> {{ orcamento.valor_multa     }}  </td></tr>
+                    <tr><th>Forma Pagto:     </th><td> {{ orcamento.forma_pagto     }}  </td></tr>
+                    <tr><th>Dt Ult Pagto:    </th><td> {{ orcamento.dt_ult_pagto   }}   </td></tr>
+                    <tr><th>Dt Fim Contrato: </th><td> {{ orcamento.dt_fim_contrato}}   </td></tr>
+                    <tr><th>Dt Prox Reuniao: </th><td> {{ orcamento.dt_prox_reuniao}}   </td></tr>
+                    <tr><th>Observacoes:     </th><td> {{ orcamento.observacoes }}      </td></tr>
+                    <tr><th>Assinado:        </th><td> <input type="checkbox" name="id_assinado" id="id_assinado" disabled /></td></tr>
+                    <tr><th>Dt Assinado      </th><td> {{ orcamento.dt_assinado }}       </td></tr>
+                </table>            
+            </div>
         </div>
     </div>               
 </section><!-- /.content -->	

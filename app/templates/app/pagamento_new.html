@@ -22,10 +22,7 @@
             <a class="btn btn-default" href="{% url 'app:orcamento_list' filtro1='all' filtro2='all' %}"><span class="glyphicon glyphicon-search"></span></a>
             <p></p>
             <div class="form-group">
-                <p class="form-control">
-                    <b>Empresa: </b> {{ orcamento.empresa }} &nbsp;&nbsp;
-                    <b>Categoria:</b> {{ orcamento.categoria }}   
-                </p>
+                <h3> {{ orcamento.empresa }} - {{ orcamento.categoria }}   </h3>
             </div>
             <ul class="nav nav-tabs">
                 <li role="presentation"><a disabled href="{% url 'app:orcamento_detail' pk=orcamento.pk %}">Detalhes</a></li>

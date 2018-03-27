@@ -16,43 +16,50 @@
 
     <div class="box box-primary">            
         <div class="box-body">
-            <form method="post">{% csrf_token %}
-                <div class="divdeleta">
-                    <h4>Are you sure you want to delete ?</h4>
-                    <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-ok"></span> </button>
-                    <a class="btn btn-default" href="{% url 'app:anexo_detail' pk=anexo.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
-                    <p>
-                </div>
-            </form>
+            
+            
+
             <a disabled class="btn btn-default" href="{% url 'app:orcamento_new' %}"><span class="fa fa-file-o"></span></a>
             <a disabled class="btn btn-default" href="{% url 'app:orcamento_edit' pk=orcamento.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
             <a disabled class="btn btn-default" href="{% url 'app:orcamento_del' pk=orcamento.pk %}"><span class="glyphicon glyphicon-trash"></span></a>
             <a class="btn btn-default" href="{% url 'app:orcamento_list' filtro1='all' filtro2='all' %}"><span class="glyphicon glyphicon-search"></span></a>
             <p></p>
             <div class="form-group">
-                <p class="form-control">
-                    <b>Empresa: </b> {{ orcamento.empresa }} &nbsp;&nbsp;
-                    <b>Categoria:</b> {{ orcamento.categoria }}   
-                </p>
+                <h3> {{ orcamento.empresa }} - {{ orcamento.categoria }}   </h3>
             </div>
             <ul class="nav nav-tabs">
                 <li role="presentation"><a disabled href="{% url 'app:orcamento_detail' pk=orcamento.pk %}">Detalhes</a></li>
                 <li role="presentation"><a disabled href="{% url 'app:pagamento_list' pk=orcamento.pk %}">Pagamentos</a></li>
                 <li role="presentation" class="active"><a disabled href="{% url 'app:anexo_list' pk=orcamento.pk %}">Anexos</a></li>
-            </ul>            
-            <p></p>            
-            <a class="btn btn-primary" href="{% url 'app:anexo_del' pk=anexo.pk %}">Deletar</a>    
-            <a class="btn btn-primary" href="{% url 'app:anexo_list' pk=orcamento.pk %}">Voltar</a>    
+            </ul>                        
             <p></p>      
-            <div class="table-responsive">      
-                <table class="table table-hover" style="width: 100%; max-width: 800px;">                       
-                    <tr><th>Arquivo        </th><td> {{ anexo.file_name      }} </td></tr>
-                    
-                </table>                
+            <div class="form-group divdeleta">
+                <form method="post">{% csrf_token %}                                    
+                    <h4>Tem certeza que deseja deletar o anexo abaixo ?</h4>
+                    <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-ok"></span> </button>
+                    <a class="btn btn-default" href="{% url 'app:anexo_detail' pk=anexo.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+                    <p></p>
+                </form>                     
             </div>
-            <p></p>            
-            <a class="btn btn-primary" href="{% url 'app:anexo_list' pk=orcamento.pk %}">Voltar</a>
-            </form>
+            <div class="divdeleta2">
+                <div class="table-responsive">      
+                    <table class="table table-hover" style="width: 100%; max-width: 800px;">                       
+                        <tr><th>Descricao       </th><td> {{ anexo.descricao }}       </td></tr>
+                        <tr>
+                            <th>Arquivo      </th><td> {% if anexo.file_name %}<a href="{{ anexo.file_name.url }}">{{ anexo.file_name }} </a> {% endif %} </td>
+                        </tr>
+                        <tr>
+                            <th>Tamanho          </th>
+                            <td> {% if anexo.file_name.size != Null %}  {{ anexo.file_name.size|filesizeformat }} {% endif %} </td> 
+                        </tr>
+                        <tr><th>Dt Implant       </th><td> {{ anexo.dt_implant }}       </td></tr>
+                        <tr><th>Dt Ult Alter     </th><td> {{ anexo.dt_ult_alter }}     </td></tr>
+                        <tr><th>Usuar Implant    </th><td> {{ anexo.usuar_implant }}    </td></tr>
+                        <tr><th>Usuar Ult Alter  </th><td> {{ anexo.usuar_ult_alter }}  </td></tr>
+                    </table>                
+                </div>
+                <p></p>                            
+            </div>
         </div>
     </div>               
 </section><!-- /.content -->	

@@ -255,6 +255,7 @@ def Categoria_Del(request, pk):
     form = CategoriaFormView(instance=categoria)
     if request.method=='POST':
         categoria.delete()
+        messages.success(request, "Categoria eliminada com sucesso.", extra_tags='alert alert-success alert-dismissible')
         return redirect('app:categoria_list', filtro='all')
 
     return render(request, 'app/categoria_del.html', {'categoria':categoria, 'form': form})
@@ -367,6 +368,7 @@ def Orcamento_Del(request, pk):
     form = OrcamentoFormView(instance=orcamento)
     if request.method=='POST':
         orcamento.delete()
+        messages.success(request, "Orçamento eliminado com sucesso.", extra_tags='alert alert-success alert-dismissible')
         return redirect('app:orcamento_list', filtro1='all', filtro2='all')
 
     return render(request, 'app/orcamento_del.html', {'orcamento':orcamento, 'form': form})
@@ -456,6 +458,7 @@ def Pagamento_Del(request, pk):
     if request.method=='POST':
         pagamento.delete()
         orcamento.RecalculaSaldo()
+        messages.success(request, "Pagamento eliminado com sucesso.", extra_tags='alert alert-success alert-dismissible')
         return redirect('app:pagamento_list', pk=orcamento.pk)
 
     return render(request, 'app/pagamento_del.html', {'pagamento':pagamento, 'orcamento':orcamento})
@@ -534,6 +537,7 @@ def Anexo_Del(request, pk):
 
     if request.method=='POST':
         anexo.delete()
+        messages.success(request, "Anexo eliminado com sucesso.", extra_tags='alert alert-success alert-dismissible')
         return redirect('app:anexo_list', pk=orcamento.pk)
 
     return render(request, 'app/anexo_del.html', {'anexo':anexo, 'orcamento':orcamento})

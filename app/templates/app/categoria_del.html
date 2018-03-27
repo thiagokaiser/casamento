@@ -13,25 +13,27 @@
 <!-- Main content -->
 <section class="content">
     <!-- Your Page Content Here -->                    
-
+	
     <div class="box box-primary">            
         <div class="box-body">
-            
-            <form method="post">{% csrf_token %}
-				<div class="divdeleta">
-					<h4>Are you sure you want to delete ?</h4>
+        	<div class="form-group divdeleta">
+				<form method="post">{% csrf_token %}            						
+					<h4>Tem certeza que deseja cancelar a categoria abaixo ?</h4>
 					<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-ok"></span> </button>
 				    <a class="btn btn-default" href="{% url 'app:categoria_detail' pk=categoria.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
-				    <p>
-			    </div
-					<br>
-					<table class="table table-hover" style="width: 100%; max-width: 800px;">
-						{{ form.as_table }}
-					</table>
-			    
-			</form>
+				    <p></p>
+			    </form>						
+		    </div>
+        	<div class="divdeleta2">				
+				<table class="table table-hover" style="width: 100%; max-width: 800px;">
+					{{ form.as_table }}
+				</table>			    			
+			</div>
         </div>
-    </div>               
+    </div>      
+    
 </section><!-- /.content -->	
+
+
 
 {% endblock %}
