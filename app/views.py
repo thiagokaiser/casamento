@@ -75,8 +75,8 @@ def Home(request):
 
     today = date.today()    
     home['prox_reuniao'] = orcamentos.filter(dt_prox_reuniao__gte=today).order_by('dt_prox_reuniao')[:10]
-    home['ult_orcamen'] = orcamentos.order_by('dt_implant')[:10]
-    home['ult_pagto'] = pagamentos.order_by('dt_pagto')[:10]
+    home['ult_orcamen'] = orcamentos.order_by('-dt_implant')[:10]
+    home['ult_pagto'] = pagamentos.order_by('-dt_pagto')[:10]
 
     for i in home.get('prox_reuniao'):
         i.data = (i.dt_prox_reuniao - today).days
