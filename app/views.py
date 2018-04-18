@@ -109,7 +109,7 @@ def Home(request):
         home['percent'] =  round((home.get('pagto', 0) * 100) / home.get('total', 0), 0)
     else:
         home['percent'] =  0
-    home['dias'] = abs(date(2019, 9, 21) - date.today())
+    home['dias'] = abs(date(2019, 9, 14) - date.today())
 
     args = {'home': home} 
     return render(request, 'app/home.html', args)
