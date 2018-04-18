@@ -131,7 +131,11 @@ def Edit_profile(request):
         return render(request, 'accounts/edit_profile.html', args)
 
 def Register(request):
-    if request.method == 'POST':
+    messages.error(request, "Registro de novo usuário desabilitado.", extra_tags='alert alert-error alert-dismissible')            
+    return redirect('app:home')                    
+
+    """
+    if request.method == 'POST':        
         form = RegisterProfileForm(request.POST)
         if form.is_valid():
             form.save()
@@ -144,11 +148,13 @@ def Register(request):
                 messages.success(request, "Usuário criado com sucesso", extra_tags='alert alert-success alert-dismissible')            
                 return redirect('app:profile')                    
         else:
-            messages.error(request, "Foram preenchidos dados incorretamente.", extra_tags='alert alert-error alert-dismissible')            
+            messages.error(request, "Foram preenchidos dados incorretamente.", extra_tags='alert alert-error alert-dismissible')                    
     else:
         form = RegisterProfileForm()
     
     args = {'form': form}
+    """
+    args = dict()
     return render(request,'accounts/register.html', args)
 
 def Change_Password(request):
