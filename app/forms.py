@@ -140,9 +140,9 @@ class OrcamentoFormView(forms.ModelForm):
 
 class PagamentoForm(forms.ModelForm):
 	comprovante = RestrictedFileField(content_types=['image/jpeg','image/png', 'application/pdf'],
-									  max_upload_size=1600000, 
+									  max_upload_size=8000000, 
 									  required=False,									  
-									  help_text='Arquivos válidos: jpg, png, pdf. Tamanho máximo: 1.5mb')
+									  help_text='Arquivos válidos: jpg, png, pdf. Tamanho máximo: 8mb')
 	class Meta:
 		model = Pagamento
 		fields = (		
@@ -154,8 +154,8 @@ class PagamentoForm(forms.ModelForm):
 
 class AnexoForm(forms.ModelForm):
 	file_name = RestrictedFileField(content_types=['image/jpeg','image/png', 'application/pdf'],
-									max_upload_size=1600000, 
-									help_text='Arquivos válidos: jpg, png, pdf. Tamanho máximo: 1.5mb')
+									max_upload_size=8000000, 
+									help_text='Arquivos válidos: jpg, png, pdf. Tamanho máximo: 8mb')
 	class Meta:
 		model = Anexo_Orcamento
 		fields = (		
